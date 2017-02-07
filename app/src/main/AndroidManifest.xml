@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -41,12 +41,27 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DriverManager"
             android:label="@string/title_activity_driver"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RouteManager"
+            android:label="@string/title_activity_route_manager"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DriverActivity"
+            android:label="@string/title_activity_driver"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".PassengerActivity"
+            android:label="@string/title_activity_passenger"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
