@@ -478,7 +478,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d("Login Activity", "Role: " + success[1]);
             } else {
                 // Something went horribly wrong
-            }
+            }   
             // TODO: Redirect the user based on their role
         }
     }
