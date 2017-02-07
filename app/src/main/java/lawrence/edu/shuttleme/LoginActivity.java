@@ -420,8 +420,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 
                 JSONObject root = new JSONObject(reader.readLine());
-                result[0] = root.getJSONObject("1").getString("userid");
-                result[1] = root.getJSONObject("1").getString("role");
+                result[0] = root.getString("userid");
+                result[1] = root.getString("role");
 
                 return result;
 
@@ -450,10 +450,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if(success[0] != "") {
                 redirectByRole(success);
-                Log.d("Login Activity", "We in boy! " + success);
+                Log.d("Login Activity", "We in boy! " + success[1]);
             }
             else {
-                Log.d("Login Activity", "Need to create an account or Server issue! " + success);
+                Log.d("Login Activity", "Need to create an account or Server issue! " + success[1]);
                 // TODO: Need to notify the user that they need to create an account since their email/pass combo is invalid or that there was an error
             }
         }
@@ -467,10 +467,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void redirectByRole(String[] success) {
             if(success[1].equals("0")) {
                 // Intent for user activity
+                Log.d("Login Activity", "Role: " + success[1]);
             } else if(success[1].equals("1")) {
                 // Intent for driver activity
+                Log.d("Login Activity", "Role: " + success[1]);
             } else if(success[1].equals("2")) {
                 // Intent for admin activity
+                Log.d("Login Activity", "Role: " + success[1]);
             } else {
                 // Something went horribly wrong
             }
