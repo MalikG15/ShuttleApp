@@ -469,8 +469,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void redirectByRole(String[] success) {
             if(success[1].equals("0")) {
                     // Intent for user activity
-                Intent intent = new Intent().setClass(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[1]);
             } else if(success[1].equals("1")) {
                 // Intent for driver activity
