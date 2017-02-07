@@ -26,6 +26,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URLConnection;
 import java.net.URL;
 import java.io.OutputStreamWriter;
@@ -36,6 +38,7 @@ import java.net.MalformedURLException;
 import android.os.AsyncTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -48,6 +51,7 @@ import android.util.Log;
 
 import 	android.support.v4.app.ActivityCompat;
 
+
 public class MainActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
@@ -56,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     private String latitude;
     private String longitude;
     public lawrence.edu.shuttleme.MainActivity copy;
+
+    private String API_KEY = "AIzaSyABFCHjiXvtSK6dhzPh8TJjQ-Nh8soZkxw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         });
     }
 
+
     /*@Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -245,25 +252,44 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                 writer.flush();
                 writer.close();*/
 
-                int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
-                String postMessage= "{\"id\":" + 10 + ",\"shuttleid\": \"1\", \"longitude\":" + 133 + ", \"latitude\":" + 66 + "}"; //HERE_YOUR_POST_STRING.
+                /*int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                String postMessage= "{\"email\":" + "@booty" + ",\"name\": \"TT\",\"password\":" + "TT" + ",\"phonenumber\":" + "234234" + ",\"role\": \"0\"}"; //HERE_YOUR_POST_STRING.
+                System.out.println(postMessage);
                 HttpParams httpParams = new BasicHttpParams();
                 HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
                 HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
                 HttpClient client = new DefaultHttpClient(httpParams);
 
-                HttpPost request = new HttpPost("http://143.44.78.173:8080/shuttle/getit");
+                HttpPost request = new HttpPost("http://143.44.78.173:8080/user/newuser");
                 request.setEntity(new ByteArrayEntity(
                         postMessage.toString().getBytes("UTF8")));
                 HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                String json = reader.readLine();
+                return Integer.valueOf(json);*/
 
+                int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpClient client = new DefaultHttpClient(httpParams);
+                HttpPost request = new HttpPost("https://maps.googleapis.com/maps/api/distancematrix/json?origins=Seattle&destinations=San+Francisco&key=" + API_KEY);
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+
+                char[] party = new char[50000];
+                int bytesread = reader.read(party, 0, party.length);
+                String gResponse = new String(party, 0, bytesread);
+                JSONObject test = new JSONObject(gResponse);
+                //return test.getJSONArray("rows").getJSONArray("elements").getJSONObject("duration").getString("text");
             }
             catch (Exception ex) {
                 ex.printStackTrace();
             }
 
-            return "";
+            return "nah, it didn't work boi";
         }
+
 
         protected void onPostExecute(String result) {
             System.out.println(result);
