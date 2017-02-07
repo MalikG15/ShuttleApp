@@ -30,4 +30,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.google.android.gms:play-services:10.0.1'
+    // For some reason I need to take this out in order for my project to compile -David
+    // compile 'com.google.android.gms:play-services-appindexing:10.0.1'
+
+    // I added this from this link: http://stackoverflow.com/questions/40732418/failed-to-resolve-com-google-android-gmsplay-services-appindexing10-0-0
+    compile 'com.google.firebase:firebase-appindexing:10.0.0'
 }
