@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="lawrence.edu.shuttleme.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="387dp"
+        android:layout_height="556dp">
+
+        <TextView
+            android:text="ShuttleMe!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:textSize="50sp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:fontFamily="sans-serif-condensed" />
+
+        <Button
+            android:text="Send Your Location to Riders!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/send_location"
+            android:layout_below="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="63dp"
+            android:fontFamily="sans-serif-condensed" />
+
+        <TextView
+            android:text="Longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/longitudeText"
+            android:layout_marginTop="46dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:layout_below="@+id/send_location"
+            android:layout_alignRight="@+id/send_location"
+            android:layout_alignEnd="@+id/send_location" />
+
+        <TextView
+            android:text="Latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/latitudeText"
+            android:layout_marginTop="105dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@+id/longitudeText"
+            android:layout_alignRight="@+id/title"
+            android:layout_alignEnd="@+id/title" />
+
+        <TextView
+            android:text="Latitude:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LatLabel"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_alignBottom="@+id/latitudeText"
+            android:layout_toLeftOf="@+id/longitudeText"
+            android:layout_toStartOf="@+id/longitudeText"
+            android:layout_marginRight="51dp"
+            android:layout_marginEnd="51dp"
+            android:layout_alignTop="@+id/latitudeText" />
+
+        <TextView
+            android:text="Longitude:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LongLabel"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_alignBottom="@+id/longitudeText"
+            android:layout_alignRight="@+id/LatLabel"
+            android:layout_alignEnd="@+id/LatLabel"
+            android:layout_alignTop="@+id/longitudeText" />
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
