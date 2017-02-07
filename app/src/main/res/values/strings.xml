@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">ShuttleMe</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_admin">Administrator</string>
     <string name="title_main_activity">GPS Coordinates</string>
-    <string name="title_activity_driver">Driver Manager</string>
+    <string name="title_activity_driver_manager">Driver Manager</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -27,4 +28,13 @@
     </string>
     <string name="get_connection_error">Server error</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_passenger">PassengerActivity</string>
+    <string name="title_activity_administrator">AdministratorActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_route_manager">RouteManager</string>
+    <string name="title_activity_driver">DriverActivity</string>
+
+    <string name="check_out">Check Out</string>
+    <string name="check_in">Check In</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>

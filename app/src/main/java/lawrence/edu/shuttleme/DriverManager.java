@@ -1,6 +1,8 @@
 package lawrence.edu.shuttleme;
 
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SearchView;
@@ -11,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import android.os.AsyncTask;
 import android.widget.AdapterView;
+import android.view.ViewGroup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,7 +127,7 @@ public class DriverManager extends AppCompatActivity {
 
             String id = listOfUsers.get(currentPos);
             new changeRole(this, "http://143.44.78.173:8080/user/changerole?userid="+id).execute();
-            Toast.makeText(getApplicationContext(), adapter.getItem(currentPos)+id, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), adapter.getItem(currentPos), Toast.LENGTH_SHORT).show();
         }
 
     } // Post-Condition: update listview with updated list, update database with new permission
@@ -144,11 +147,11 @@ public class DriverManager extends AppCompatActivity {
 
             String id = listOfUsers.get(currentPos);
             new changeRole(this, "http://143.44.78.173:8080/user/changerole?userid="+id).execute();
-            Toast.makeText(getApplicationContext(), adapter.getItem(currentPos)+id, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), adapter.getItem(currentPos), Toast.LENGTH_SHORT).show();
         }
     } // Post-Condition: update listview with updated list, update database with new permission
 
-    // Interpret result nd show it on listview
+    // Interpret result and show it on listview
     public void onRetrieveListCompleted(String result){
         // Store id and names of users
         listOfUsers = new HashMap<Integer,String>();
@@ -189,6 +192,7 @@ public class DriverManager extends AppCompatActivity {
 
     }
 }
+
 
 class RetrieveList extends AsyncTask<String, String, String> {
 
