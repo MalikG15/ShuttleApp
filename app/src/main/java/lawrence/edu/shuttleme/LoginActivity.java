@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.widget.ActionBarOverlayLayout;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
@@ -142,6 +143,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(mActionBarToolbar);
+        getSupportActionBar().setTitle("Login");
     }
 
     private void registerActivity() {
@@ -467,15 +472,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void redirectByRole(String[] success) {
             if(success[1].equals("0")) {
                 // Intent for user activity
+                Intent intent = new Intent(getApplicationContext(), PassengerActivity.class);
+                intent.putExtra("USER_ID", success[0]);
+                startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[1]);
             } else if(success[1].equals("1")) {
                 // Intent for driver activity
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(),DriverActivity.class);
+                startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[1]);
             } else if(success[1].equals("2")) {
                 // Intent for admin activity
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(),DriverManager.class);
+                startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[1]);
             } else {
                 // Something went horribly wrong
+                return;
             }
             // TODO: Redirect the user based on their role
         }

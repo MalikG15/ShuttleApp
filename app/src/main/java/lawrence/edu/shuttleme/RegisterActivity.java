@@ -204,7 +204,7 @@ public class RegisterActivity extends AppCompatActivity {
             uri = "http://" + hostName + "/user/newuser";
             json = "{\"email\":" + email + ",\"name\":" + name +
                     ",\"password\":" + password + ",\"phonenumber\":" + phoneNumber +
-                    ",\"role\": \"0\"}";
+                    ",\"role\":\"0\"}";
 
         }
 
