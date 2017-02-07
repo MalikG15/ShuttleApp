@@ -71,6 +71,8 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 import static lawrence.edu.shuttleme.LoginActivity.hostName;
 
+import lawrence.edu.shuttleme.MainActivity;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -92,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     // Network URI
-    public static final String hostName = "localhost:8080";
+    public static final String hostName = "143.44.78.173:8080";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -466,7 +468,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         protected void redirectByRole(String[] success) {
             if(success[1].equals("0")) {
-                // Intent for user activity
+                    // Intent for user activity
+                Intent intent = new Intent().setClass(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[1]);
             } else if(success[1].equals("1")) {
                 // Intent for driver activity
