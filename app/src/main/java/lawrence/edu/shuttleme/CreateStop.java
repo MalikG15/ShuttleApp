@@ -169,8 +169,8 @@ class CreateStopTask extends AsyncTask<String, Void, Integer> {
     // Create stop based off the required fields for stops
     CreateStopTask(String name, String address, String city, String state, String zipcode, String latitude, String longitude, String hostName, CreateStop cb) {
         uri = "http://" + hostName + "/stop/create";
-        json = "{\"name\":" + name + ",\"address\":" + address + city + ", " + state + zipcode +
-                ",\"latitude\":" + latitude + ",\"longitude\":" + longitude + "}";
+        json = "{\"name\":" + "\"" + name + "\"" + ",\"address\":" + "\"" + address + " " + city + ", " + state +" "+ zipcode + "\"" +
+                ",\"latitude\":" + "\"" + latitude + "\"" + ",\"longitude\":" + "\"" + longitude + "\"" +"}";
         callback = cb;
     }
 

@@ -48,7 +48,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DriverManager"
-            android:label="@string/title_activity_driver"
+            android:label="@string/title_activity_driver_manager"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RouteManager"
@@ -61,6 +61,10 @@
         <activity
             android:name=".PassengerActivity"
             android:label="@string/title_activity_passenger"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateStop"
+            android:label="Create a Stop"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
