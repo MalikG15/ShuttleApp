@@ -129,6 +129,10 @@ public class RouteManager extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     // After response from server, parse JSON, get all routes
     // Store routes and present it on drop down menu
     public void onRetrieveRoutesCompleted(String result){

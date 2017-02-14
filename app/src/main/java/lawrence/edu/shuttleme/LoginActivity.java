@@ -151,6 +151,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         getSupportActionBar().setTitle("Login");
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private void registerActivity() {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);

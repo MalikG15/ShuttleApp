@@ -84,6 +84,10 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
