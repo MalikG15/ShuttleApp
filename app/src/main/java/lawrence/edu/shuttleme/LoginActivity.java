@@ -487,7 +487,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } else if(success[1].equals("2")) {
                 // Intent for admin activity
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(),DriverManager.class);
+                intent.setClass(getApplicationContext(),RouteManager.class);
                 startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[1]);
             } else if (success[1].equals("-1")) {
