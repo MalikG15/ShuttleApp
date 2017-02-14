@@ -13,4 +13,104 @@
     tools:context="lawrence.edu.shuttleme.RouteManager"
     tools:showIn="@layout/activity_route_manager">
 
+    <TextView
+        android:text="Select a Route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView8"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/route_list_spinner"
+        android:layout_below="@+id/textView8"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/route_description"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/textView5"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignStart="@+id/textView5" />
+
+    <TextView
+        android:text="Route Description:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/route_list_spinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp" />
+
+    <Button
+        android:text="Delete This Route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_route"
+        android:layout_alignBaseline="@+id/assign_route"
+        android:layout_alignBottom="@+id/assign_route"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="Create Stop"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_stop"
+        android:layout_width="match_parent"
+        android:layout_alignBaseline="@+id/create_route"
+        android:layout_alignBottom="@+id/create_route"
+        android:layout_alignLeft="@+id/delete_route"
+        android:layout_alignStart="@+id/delete_route" />
+
+    <Button
+        android:text="Create New Route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_route"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/assign_route"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Manage Drivers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/manage_drivers"
+        android:layout_below="@+id/create_stop"
+        android:layout_alignLeft="@+id/edit_general_information"
+        android:layout_alignStart="@+id/edit_general_information"
+        android:layout_marginTop="23dp"
+        android:layout_alignRight="@+id/edit_general_information"
+        android:layout_alignEnd="@+id/edit_general_information" />
+
+    <Button
+        android:text="Edit General Information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_general_information"
+        android:layout_below="@+id/manage_drivers"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:text="Assign this Route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/assign_route"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

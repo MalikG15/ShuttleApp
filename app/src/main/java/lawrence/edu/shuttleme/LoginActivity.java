@@ -490,14 +490,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 intent.setClass(getApplicationContext(),DriverManager.class);
                 startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[1]);
-            } else {
+            } else if (success[1].equals("-1")) {
                 // Something went horribly wrong
-<<<<<<< HEAD
-            }   
-=======
-                return;
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
->>>>>>> 522958989edd7ba88d974f852c8c62c4a51ec3df
+                return;
             // TODO: Redirect the user based on their role
         }
     }

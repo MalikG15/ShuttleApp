@@ -40,12 +40,12 @@ public class PassengerActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                userID= null;
+                userID = null;
             } else {
-                userID= extras.getString("USER_ID");
+                userID = extras.getString("USER_ID");
             }
         } else {
-            userID= (String) savedInstanceState.getSerializable("USER_ID");
+            userID = (String) savedInstanceState.getSerializable("USER_ID");
         }
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
