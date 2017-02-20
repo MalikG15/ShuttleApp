@@ -82,7 +82,7 @@ public class DriverManager extends AppCompatActivity {
     }
 
     // Pre-Condition: Click on any radio button
-    public void getList(View view) {
+    public void getPassengerList(View view) {
 
         //require to import the RadioButton class
         RadioButton pb = (RadioButton) findViewById(R.id.passengerButton);

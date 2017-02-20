@@ -38,7 +38,6 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Tab1Location extends Fragment {
     private boolean isCheckedIn = false;
-    private boolean checkOutFailed = false;
     private String id;
     private ToggleButton toggleButton;
 

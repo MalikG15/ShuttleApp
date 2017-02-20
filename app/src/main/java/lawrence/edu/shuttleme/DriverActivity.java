@@ -153,7 +153,7 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void getAssignedRoute() {
-        // TODO: Once RouteManager is completed driver
+        // TODO: Once RouteManager is completed
     }
 
     public class ClipBoard {
@@ -208,11 +208,11 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
             //listView.setAdapter(adapter);
         }
 
-        class RetrieveCheckedIn extends AsyncTask<String, String, String> {
+        class RetrieveCheckedInPassengers extends AsyncTask<String, String, String> {
 
             String uri = "";
 
-            public RetrieveCheckedIn() {
+            public RetrieveCheckedInPassengers() {
                 // uri = "http://" + hostName + "/user/checkuser?email=" + mEmail + "&password=" + mPassword;
             }
 
