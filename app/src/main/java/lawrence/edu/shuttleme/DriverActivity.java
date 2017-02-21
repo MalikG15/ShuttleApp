@@ -426,7 +426,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
 
             uri = "http://" + hostName + "/shuttle/sendlocation";
             json = "{\"latitude\":" + "\"" + latitude + "\"" + ",\"longitude\":" + "\"" + longitude + "\"" +
-                    ",\"driverid\":" + driverID + "}";
+                    ",\"driverid\":" +"\"" + driverID + "\"}";
 
         }
 
@@ -478,8 +478,8 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
 
             } else {
                 Log.d("Driver Activity", "Must be a server issue: " + success);
-                // TODO: Some useful message about the error
-            }
+                // TODO: Need to differentiate bewtween duplicate coordinates and server issue
+        }
         }
     }
 }
