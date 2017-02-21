@@ -125,7 +125,7 @@ public class CreateStop extends AppCompatActivity {
             focusView = mLongitudeView;
             cancel = true;
         } else {
-            new CreateStopTask(name, address, city, state, zipcode, latitude, longitude, hostName, this).execute();
+            new Stop(name, address, city, state, zipcode, latitude, longitude, hostName, this).execute();
         }
 
     }
@@ -160,14 +160,14 @@ public class CreateStop extends AppCompatActivity {
 
 }
 
-class CreateStopTask extends AsyncTask<String, Void, Integer> {
+class Stop extends AsyncTask<String, Void, Integer> {
 
     private final String uri;
     private String json;
     private CreateStop callback;
 
     // Create stop based off the required fields for stops
-    CreateStopTask(String name, String address, String city, String state, String zipcode, String latitude, String longitude, String hostName, CreateStop cb) {
+    Stop(String name, String address, String city, String state, String zipcode, String latitude, String longitude, String hostName, CreateStop cb) {
         uri = "http://" + hostName + "/stop/create";
         json = "{\"name\":" + "\"" + name + "\"" + ",\"address\":" + "\"" + address + " " + city + ", " + state +" "+ zipcode + "\"" +
                 ",\"latitude\":" + "\"" + latitude + "\"" + ",\"longitude\":" + "\"" + longitude + "\"" +"}";

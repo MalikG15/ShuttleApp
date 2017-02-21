@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,14 +63,21 @@ public class PassengerActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_passenger, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_passenger, menu);
         return true;
     }
 
+
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -84,7 +92,7 @@ public class PassengerActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    */
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
