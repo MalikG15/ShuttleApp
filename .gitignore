@@ -9,3 +9,4 @@
 .externalNativeBuild
 app/src/main/java/lawrence/edu/shuttleme/GoogleAPI.java
 .idea/misc.xml
+.idea/vcs.xml
