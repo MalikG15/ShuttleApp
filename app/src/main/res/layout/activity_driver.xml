@@ -49,15 +49,6 @@
                 android:id="@+id/send_location"
                 android:layout_centerHorizontal="true" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:layout_below="@+id/send_location"
-                android:layout_marginTop="20dp"
-                android:id="@+id/checked_in_passengers"
-                android:text="Checked In Passengers"
-                android:textSize="18sp"/>
 
             <ListView
                 android:id="@+id/check_list_view"
@@ -69,6 +60,45 @@
                 android:layout_marginTop="74dp">
 
             </ListView>
+
+            <TextView
+                android:text="Longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/longitudeText"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:layout_alignBottom="@+id/checked_in_passengers"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="26dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginBottom="34dp" />
+
+            <TextView
+                android:text="Latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/latitudeText"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_alignBaseline="@+id/longitudeText"
+                android:layout_alignBottom="@+id/longitudeText"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="33dp"
+                android:layout_marginEnd="33dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:layout_marginTop="43dp"
+                android:id="@+id/checked_in_passengers"
+                android:text="Checked In Passengers"
+                android:textSize="18sp"
+                android:layout_below="@+id/send_location"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 

@@ -59,6 +59,8 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
     private ListView listView;
     private TextView passengerTextView;
     private Button getLocation;
+    private TextView latitudeText;
+    private TextView longitudeText;
 
     private GoogleApiClient mGoogleApiClient;
     private android.location.Location mLastLocation;
@@ -83,6 +85,9 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
         listView = (ListView) findViewById(R.id.check_list_view);
         passengerTextView = (TextView) findViewById(R.id.checked_in_passengers);
         getLocation = (Button) findViewById(R.id.send_location);
+
+        latitudeText = (TextView) findViewById(R.id.latitudeText);
+        longitudeText = (TextView) findViewById(R.id.longitudeText);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -143,8 +148,8 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
             if (mLastLocation != null) {
-                latitude = (String.valueOf(mLastLocation.getLatitude()));
-                longitude = (String.valueOf(mLastLocation.getLongitude()));
+                latitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+                longitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
             }
         }
 
@@ -157,8 +162,8 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                             mGoogleApiClient);
                     if (mLastLocation != null) {
-                        latitude = (String.valueOf(mLastLocation.getLatitude()));
-                        longitude = (String.valueOf(mLastLocation.getLongitude()));
+                        latitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+                        longitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
                     }
                 }
             }
