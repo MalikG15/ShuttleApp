@@ -425,8 +425,8 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
             driverID = driverid;
 
             uri = "http://" + hostName + "/shuttle/sendlocation";
-            json = "{\"latitude\":" + "\"" + Lat + "\"" + ",\"longitude\":" + "\"" + Long + "\"" +
-                    ",\"driverid\":" + driverid + "}";
+            json = "{\"latitude\":" + "\"" + latitude + "\"" + ",\"longitude\":" + "\"" + longitude + "\"" +
+                    ",\"driverid\":" + driverID + "}";
 
         }
 
