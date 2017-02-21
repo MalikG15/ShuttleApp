@@ -1,5 +1,6 @@
 package lawrence.edu.shuttleme;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,12 +27,20 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.*;
 import android.support.v4.content.ContextCompat;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,6 +53,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class DriverActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private ClipBoard clipBoard;
+    private String driverName;
+    private String driverID;
 
     private ListView listView;
     private TextView passengerTextView;
@@ -71,6 +83,26 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
         listView = (ListView) findViewById(R.id.check_list_view);
         passengerTextView = (TextView) findViewById(R.id.checked_in_passengers);
         getLocation = (Button) findViewById(R.id.send_location);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                driverName = null;
+            } else {
+                driverName = extras.getString("DRIVER_NAME");
+                driverID = extras.getString("DRIVER_ID");
+            }
+        } else {
+            driverName = (String) savedInstanceState.getSerializable("DRIVER_NAME");
+            driverID = (String) savedInstanceState.getSerializable("DRIVER_ID");
+        }
+
+        new CreateClipBoardSession(driverName, driverID).execute();
+
+        // TODO: Once the driver logins, clipboardsession is created, need the drivers ID
+        // TODO: Clipboard ID is going to be returned to access the passengers
+        // TODO: Need clipboard sessionID in clipboard to update count
+        // TODO: Clipboard id to get
 
         // TODO: Make populate passengers update automatically after 30 seconds or create a refresh button
         populatePassengers();
@@ -277,6 +309,60 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
             }
 
         }
+    }
+    public class CreateClipBoardSession extends AsyncTask<String, Void, String[]> {
+
+        private final String driverID;
+        private final String driverName;
+        private final String uri;
+        private String json;
+
+        CreateClipBoardSession(String driverid, String drivername) {
+            driverID = driverid;
+            driverName = drivername;
+            uri = "http://" + hostName + "/clipboardsession/newclipboardsession";
+            json = "{\"name\":" + drivername + ",\"userid\":" + driverID + "}";
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+            String[] result = {"", "", ""};
+
+            try {
+                int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpClient client = new DefaultHttpClient(httpParams);
+
+                HttpGet request = new HttpGet(uri);
+
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+
+                JSONObject root = new JSONObject(reader.readLine());
+                result[0] = root.getString("name");
+
+                return result;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(final String[] success) {
+
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+
+
     }
 }
 

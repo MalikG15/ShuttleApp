@@ -41,6 +41,7 @@ public class Tab1Location extends Fragment {
     private String id;
     private ToggleButton toggleButton;
 
+    public static final String hostName = "143.44.78.173:8080";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,11 +77,10 @@ public class Tab1Location extends Fragment {
     }
     public void checkInNOut(){
          if(isCheckedIn==false){
-                new checkIn(this, "http://143.44.78.173:8080/clipboard/checkin", id).execute();
-
+                new checkIn(this, "http://" + hostName  + "clipboard/checkin", id).execute();
          }
          else{
-             new checkOut(this, "http://143.44.78.173:8080/clipboard/checkout?userid=" + id).execute();
+             new checkOut(this, "http://" + hostName + "/clipboard/checkout?userid=" + id).execute();
              isCheckedIn = false;
          }
     }
