@@ -103,6 +103,7 @@ public class Tab1Location extends Fragment {
 
         if(Integer.valueOf(result) == -1){
             Toast.makeText(((PassengerActivity) getActivity()).getApplicationContext(), "You were not able to check in", Toast.LENGTH_SHORT).show();
+            toggleButton.setChecked(false);
 
         }
         else{

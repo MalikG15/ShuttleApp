@@ -104,11 +104,14 @@ public class PassengerActivity extends AppCompatActivity {
                     Tab1Location tab1 = new Tab1Location();
                     return tab1;
                 case 1:
+                    LocateShuttle tab3 = new LocateShuttle();
+                    return tab3;
+                case 2:
                     Tab2GeneralInformation tab2 = new Tab2GeneralInformation();
                     return tab2;
                 default:
-                    Tab1Location tab3 = new Tab1Location();
-                    return tab3;
+                    Tab1Location tab0 = new Tab1Location();
+                    return tab0;
             }
         }
 
@@ -124,6 +127,8 @@ public class PassengerActivity extends AppCompatActivity {
                 case 0:
                     return "Current Location";
                 case 1:
+                    return "Locate Shuttle";
+                case 2:
                     return "General Information";
             }
             return null;
