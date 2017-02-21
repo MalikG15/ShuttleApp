@@ -460,7 +460,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             */
 
-            if(success[0] != "") {
+            if(success[2] != "") {
                 redirectByRole(success);
                 Log.d("Login Activity", "We in boy! " + success[2]);
             }
@@ -477,13 +477,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         protected void redirectByRole(String[] success) {
-            if(success[1].equals("0")) {
+            if(success[2].equals("0")) {
             // Intent for user activity
                 Intent intent = new Intent(getApplicationContext(), PassengerActivity.class);
                 intent.putExtra("USER_ID", success[1]);
                 startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[2]);
-            } else if(success[1].equals("1")) {
+            } else if(success[2].equals("1")) {
                 // checkforExistingLogin();
                 // Intent for driver activity
                 Intent intent = new Intent();
@@ -494,13 +494,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 intent.putExtras(extras);
                 startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[2]);
-            } else if(success[1].equals("2")) {
+            } else if(success[2].equals("2")) {
                 // Intent for admin activity
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(),RouteManager.class);
                 startActivity(intent);
                 Log.d("Login Activity", "Role: " + success[2]);
-            } else if (success[1].equals("-1")) {
+            } else if (success[2].equals("-1")) {
                 // Something went horribly wrong
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), MainActivity.class);

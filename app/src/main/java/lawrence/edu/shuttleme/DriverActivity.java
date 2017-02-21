@@ -97,7 +97,7 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
             driverID = (String) savedInstanceState.getSerializable("DRIVER_ID");
         }
 
-        new CreateClipBoardSession(driverName, driverID).execute();
+        // new CreateClipBoardSession(driverName, driverID).execute();
 
         // TODO: Once the driver logins, clipboardsession is created, need the drivers ID
         // TODO: Clipboard ID is going to be returned to access the passengers
