@@ -209,7 +209,6 @@ public class RegisterActivity extends AppCompatActivity {
             json = "{\"email\":" + email + ",\"name\":" + name +
                     ",\"password\":" + password + ",\"phonenumber\":" + phoneNumber +
                     ",\"role\":\"0\"}";
-
         }
 
         @Override
