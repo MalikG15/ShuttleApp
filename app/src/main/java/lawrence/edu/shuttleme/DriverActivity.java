@@ -1,7 +1,12 @@
 package lawrence.edu.shuttleme;
 
+import android.*;
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,16 +25,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.*;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -50,7 +60,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class DriverActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class DriverActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private ClipBoard clipBoard;
     private String driverName;
@@ -63,9 +73,10 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
     private TextView longitudeText;
 
     private GoogleApiClient mGoogleApiClient;
-    private android.location.Location mLastLocation;
+    // Malik's phone MUST be connected to wifi
+    private Location mLastLocation;
     private int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    public lawrence.edu.shuttleme.DriverActivity copy;
+    public DriverActivity copy;
     private String latitude;
     private String longitude;
 
@@ -91,8 +102,9 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
+            if (extras == null) {
                 driverName = null;
+                driverID = null;
             } else {
                 driverName = extras.getString("DRIVER_NAME");
                 driverID = extras.getString("DRIVER_ID");
@@ -113,11 +125,13 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
         populatePassengers();
 
         if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
+            // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            mGoogleApiClient = new Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
-                    .build();
+                    .addApi(AppIndex.API).build();
         }
     }
 
@@ -128,11 +142,16 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.start(mGoogleApiClient, getIndexApiAction());
     }
 
     protected void onStop() {
         mGoogleApiClient.disconnect();
-        super.onStop();
+        super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(mGoogleApiClient, getIndexApiAction());
     }
 
     @Override
@@ -141,13 +160,15 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
 
         ActivityCompat.requestPermissions(
                 this,
-                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         copy = this;
 
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
             if (mLastLocation != null) {
+                latitude = String.valueOf(mLastLocation.getLatitude());
+                longitude = String.valueOf(mLastLocation.getLongitude());
                 latitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
                 longitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
             }
@@ -158,12 +179,16 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
         getLocation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if (ContextCompat.checkSelfPermission(copy, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(copy, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                             mGoogleApiClient);
                     if (mLastLocation != null) {
+                        latitude = String.valueOf(mLastLocation.getLatitude());
+                        longitude = String.valueOf(mLastLocation.getLongitude());
+                        Log.d("Driver", "Lat: " + latitude + " Long: " + longitude);
                         latitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
                         longitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+                        new PostDriverLocationTask(latitude, longitude, driverID).execute();
                     }
                 }
             }
@@ -191,6 +216,22 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
 
     public void getAssignedRoute() {
         // TODO: Once RouteManager is completed
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Driver Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
     }
 
     public class ClipBoard {
@@ -367,7 +408,79 @@ public class DriverActivity extends AppCompatActivity implements GoogleApiClient
         protected void onCancelled() {
         }
 
+    }
 
+    public class PostDriverLocationTask extends AsyncTask<String, Void, Integer> {
+
+        private final String uri;
+        private String json;
+
+        private String latitude;
+        private String longitude;
+        private String driverID;
+
+        PostDriverLocationTask(String Lat, String Long, String driverid) {
+            latitude = Lat;
+            longitude = Long;
+            driverID = driverid;
+
+            uri = "http://" + hostName + "/shuttle/sendlocation";
+            json = "{\"latitude\":" + "\"" + Lat + "\"" + ",\"longitude\":" + "\"" + Long + "\"" +
+                    ",\"driverid\":" + driverid + "}";
+
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            int return_value = 0;
+
+            try {
+                int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpClient client = new DefaultHttpClient(httpParams);
+
+                HttpPost request = new HttpPost(uri);
+                request.setEntity(new ByteArrayEntity(
+                        json.toString().getBytes("UTF8")));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                String result = reader.readLine();
+                return_value = Integer.valueOf(result);
+
+                return return_value;
+
+            } catch(Exception ex) {
+                Log.d("Driver Activity","Exception in doPost:" + ex.toString());
+            }
+            return return_value;
+        }
+
+        @Override
+        protected void onPostExecute(final Integer success) {
+            if (success == 1) {
+
+                Context context = getApplicationContext();
+                CharSequence text = "Location Updated";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+            } else if (success == 0){
+                Context context = getApplicationContext();
+                CharSequence text = "Fail to update location";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+            } else {
+                Log.d("Driver Activity", "Must be a server issue: " + success);
+                // TODO: Some useful message about the error
+            }
+        }
     }
 }
 
