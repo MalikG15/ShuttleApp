@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,8 +31,14 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.*;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
@@ -57,10 +64,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class DriverActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class DriverActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     private ClipBoard clipBoard;
     private String driverName;
@@ -73,12 +82,14 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
     private TextView longitudeText;
 
     private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
     // Malik's phone MUST be connected to wifi
     private Location mLastLocation;
     private int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     public DriverActivity copy;
     private String latitude;
     private String longitude;
+
 
     // Network URI
     public static final String hostName = "143.44.78.173:8080";
@@ -131,8 +142,10 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
-                    .addApi(AppIndex.API).build();
+                    .addApi(AppIndex.API)
+                    .build();
         }
+
     }
 
     @Override
@@ -164,35 +177,40 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
         copy = this;
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            // Use mLastLocation as a base to start from, so that the app has a location before starting the periodic updates
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
             if (mLastLocation != null) {
                 latitude = String.valueOf(mLastLocation.getLatitude());
                 longitude = String.valueOf(mLastLocation.getLongitude());
-                latitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-                longitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+                updateUI();
+                new PostDriverLocationTask(latitude, longitude, driverID).execute();
             }
+
+            mLocationRequest = new LocationRequest();
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setInterval(10000); // Update location every 10 seconds
+
+            mLocationRequest.setFastestInterval(4000);
+            // Fastest interval to recognize location changes, 4 seconds
+            // Since we are tracking faster moving target we need to be more precise about location
+
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                    .addLocationRequest(mLocationRequest);
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this); // Begins process of periodic update
         }
+    }
+    // For more information about automatic location updates: https://developer.android.com/training/location/receive-location-updates.html
 
-        // TODO: Make an event that repeats every 5 seconds
-
-        getLocation.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                if (ContextCompat.checkSelfPermission(copy, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                            mGoogleApiClient);
-                    if (mLastLocation != null) {
-                        latitude = String.valueOf(mLastLocation.getLatitude());
-                        longitude = String.valueOf(mLastLocation.getLongitude());
-                        Log.d("Driver", "Lat: " + latitude + " Long: " + longitude);
-                        latitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-                        longitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-                        new PostDriverLocationTask(latitude, longitude, driverID).execute();
-                    }
-                }
-            }
-        });
+    // Callback method for when Location has changed
+    public void onLocationChanged(Location location) {
+        latitude = String.valueOf(location.getLatitude());
+        longitude = String.valueOf(location.getLongitude());
+        mLastLocation = location;
+        updateUI();
+        new PostDriverLocationTask(latitude, longitude, driverID).execute();
     }
 
     @Override
@@ -205,13 +223,14 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
         // We are not connected anymore!
     }
 
+    void updateUI() {
+        latitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+        longitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+    }
+
     public void populatePassengers() {
         clipBoard = new ClipBoard(this);
         clipBoard.updatePassengerList();
-    }
-
-    public void updateCurrentLocation(String latitude, String longitude) {
-        // TODO: Persistent update for location
     }
 
     public void getAssignedRoute() {
@@ -470,16 +489,23 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
 
             } else if (success == 0){
                 Context context = getApplicationContext();
-                CharSequence text = "Fail to update location";
+                CharSequence text = "No location change";
                 int duration = Toast.LENGTH_LONG;
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 
-            } else {
+            } else if(success == -1) {
+
+                Context context = getApplicationContext();
+                CharSequence text = "Failed to change - server issue";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
                 Log.d("Driver Activity", "Must be a server issue: " + success);
                 // TODO: Need to differentiate bewtween duplicate coordinates and server issue
-        }
+            }
         }
     }
 }
