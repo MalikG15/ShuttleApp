@@ -82,7 +82,7 @@ public class DriverManager extends AppCompatActivity {
     }
 
     // Pre-Condition: Click on any radio button
-    public void getPassengerList(View view) {
+    public void getList(View view) {
 
         //require to import the RadioButton class
         RadioButton pb = (RadioButton) findViewById(R.id.passengerButton);
@@ -323,8 +323,6 @@ class changeRole extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
-        List<String> listOfPassengers = new ArrayList<String>();
 
         String response = "";
         String responseError = "";
