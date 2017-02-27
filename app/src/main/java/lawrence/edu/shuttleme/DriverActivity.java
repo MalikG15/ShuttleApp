@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -251,6 +252,33 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
                 .setObject(object)
                 .setActionStatus(Action.STATUS_TYPE_COMPLETED)
                 .build();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_passenger, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, LoginActivity.class);
+                this.startActivity(intent);
+                break;
+            /*
+            case R.id.menu_item2:
+                // another startActivity, this is for item with id "menu_item2"
+                break;
+            */
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     public class ClipBoard {

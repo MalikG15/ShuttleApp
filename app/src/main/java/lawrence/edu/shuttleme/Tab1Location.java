@@ -77,7 +77,7 @@ public class Tab1Location extends Fragment {
     }
     public void checkInNOut(){
          if(isCheckedIn==false){
-                new checkIn(this, "http://" + hostName  + "clipboard/checkin", id).execute();
+                new checkIn(this, "http://" + hostName  + "/clipboard/checkin", id).execute();
          }
          else{
              new checkOut(this, "http://" + hostName + "/clipboard/checkout?userid=" + id).execute();

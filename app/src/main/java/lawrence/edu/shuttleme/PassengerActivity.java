@@ -1,5 +1,6 @@
 package lawrence.edu.shuttleme;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -77,23 +78,23 @@ public class PassengerActivity extends AppCompatActivity {
     }
 
 
-    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, LoginActivity.class);
+                this.startActivity(intent);
+                break;
+            /*
+            case R.id.menu_item2:
+                // another startActivity, this is for item with id "menu_item2"
+                break;
+            */
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
-    */
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
