@@ -84,6 +84,10 @@
             android:name=".CreateStop"
             android:label="Create a Stop"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateRoute"
+            android:label="Create a Route"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

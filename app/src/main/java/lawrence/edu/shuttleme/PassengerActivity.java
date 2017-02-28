@@ -23,6 +23,8 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 public class PassengerActivity extends AppCompatActivity {
     String userID;
 

@@ -58,8 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/delete_route"
-        android:layout_alignBaseline="@+id/assign_route"
-        android:layout_alignBottom="@+id/assign_route"
+        android:layout_alignBaseline="@+id/delete_stop"
+        android:layout_alignBottom="@+id/delete_stop"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:textSize="12sp" />
@@ -69,13 +69,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/create_stop"
         android:layout_width="match_parent"
-        android:layout_alignBaseline="@+id/create_route"
-        android:layout_alignBottom="@+id/create_route"
+        android:layout_alignBaseline="@+id/finalize_route"
+        android:layout_alignBottom="@+id/finalize_route"
         android:layout_alignLeft="@+id/delete_route"
         android:layout_alignStart="@+id/delete_route"
         android:textSize="12sp" />
 
     <Button
+<<<<<<< HEAD
         android:text="Create New Route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,7 +104,7 @@
         android:text="Assign this Route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/assign_route"
+        android:id="@+id/delete_stop"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -118,5 +119,17 @@
         android:textSize="12sp"
         android:layout_below="@+id/manage_drivers"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Create Route"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/finalize_route"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/delete_stop"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/delete_stop"
+        android:layout_alignEnd="@+id/delete_stop" />
 
 </RelativeLayout>

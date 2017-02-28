@@ -16,28 +16,13 @@
         android:text="General Information"/>
 
     <TextView
-        android:text="This page will be populated with general information regarding the shuttle system at Lawrence University"
+        android:text="http://www.lawrence.edu/mw/shopping_shuttle.pdf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="67dp"
-        android:id="@+id/textView3"
+        android:id="@+id/info_view"
         android:layout_below="@+id/section_label"
         android:layout_centerHorizontal="true" />
 
-
-
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="141dp">
-
-        <com.google.android.gms.maps.MapView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/map"/>
-    </android.support.design.widget.CoordinatorLayout>
 
 </RelativeLayout>
