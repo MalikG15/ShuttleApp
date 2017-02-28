@@ -58,7 +58,7 @@ public class DriverETA extends AppCompatActivity {
                 HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
                 HttpClient client = new DefaultHttpClient(httpParams);
 
-                HttpGet request = new HttpGet("http://143.44.78.173:8080/shuttle/get?shuttleid=2");
+                HttpGet request = new HttpGet("http://143.44.78.173:8080/shuttle/get?shuttleid=de748d23-d9f6-4f5b-8448-89bf0c5302e7");
 
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
@@ -344,8 +344,11 @@ public class DriverETA extends AppCompatActivity {
 
                 JSONArray ETA = test.getJSONArray("rows");
 
+                System.out.print(test.toString());
+
                 String time = ETA.getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getString("text");
 
+                System.out.println(time);
                 return Integer.valueOf(time.split(" ")[0]);
 
             } catch (Exception ex) {

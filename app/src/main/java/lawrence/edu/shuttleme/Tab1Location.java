@@ -88,11 +88,11 @@ public class Tab1Location extends Fragment {
     public void onCheckOutCompleted(Integer result){
         Log.d("Check out Activity: ", String.valueOf(result));
         Log.d("ID: ", id);
-        if(Integer.valueOf(result) == -1){
+        if (Integer.valueOf(result) == -1){
             Toast.makeText(((PassengerActivity) getActivity()).getApplicationContext(), "You were not able to check out", Toast.LENGTH_SHORT).show();
             toggleButton.setChecked(true);
         }
-        if(Integer.valueOf(result)==0){
+        if (Integer.valueOf(result) == 0){
             Toast.makeText(((PassengerActivity) getActivity()).getApplicationContext(), "You have successfully checked out", Toast.LENGTH_SHORT).show();
             isCheckedIn = false;
         }
