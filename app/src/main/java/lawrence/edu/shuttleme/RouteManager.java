@@ -60,6 +60,7 @@ public class RouteManager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_manager);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("ShuttleMe");
@@ -82,7 +83,7 @@ public class RouteManager extends AppCompatActivity {
         descriptions.put(two, "This is the second route! You know this MANNNN");*/
 
         // Execute a AssignRoute task using selected route when button pressed
-        mAssignRouteButton = (Button) findViewById(R.id.assign_route);
+        mAssignRouteButton = (Button) findViewById(R.id.delete_stop);
         mAssignRouteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -112,7 +113,7 @@ public class RouteManager extends AppCompatActivity {
         });
 
         // Go to Create Route Activity when button pressed
-        mCreateRouteButton = (Button) findViewById(R.id.create_route);
+        mCreateRouteButton = (Button) findViewById(R.id.finalize_route);
         mCreateRouteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

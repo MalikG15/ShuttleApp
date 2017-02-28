@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.google.android.gms.maps.SupportMapFragment;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -32,12 +35,10 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/**
- * Created by elkingarcia on 2/7/17.
- */
 
 public class Tab1Location extends Fragment {
     private boolean isCheckedIn = false;
+
     private String id;
     private ToggleButton toggleButton;
 
@@ -67,21 +68,12 @@ public class Tab1Location extends Fragment {
             }
         });
 
-        // Will constantly update location
-        /*if(isCheckedIn == true){
-            final Handler h = new Handler();
-            final int delay = 10000; //milliseconds
+        //Check checked-in status
+        new getCheckInStatus(this, "http://" + hostName  + "/clipboard/status?userid="+id).execute();
 
-            h.postDelayed(new Runnable(){
-                public void run(){
-                    //do something
-                    new sendLocation(this, "http://143.44.78.173:8080/user/checkout?userid="+id).execute();
-                    h.postDelayed(this, delay);
-                }
-            }, delay);
-        }*/
         return rootView;
     }
+
     public void checkInNOut(){
          if(isCheckedIn==false){
                 new checkIn(this, "http://" + hostName  + "/clipboard/checkin", id).execute();
@@ -92,6 +84,7 @@ public class Tab1Location extends Fragment {
          }
     }
 
+    // Update toggle button with necessary option
     public void onCheckOutCompleted(Integer result){
         Log.d("Check out Activity: ", String.valueOf(result));
         Log.d("ID: ", id);
@@ -105,9 +98,10 @@ public class Tab1Location extends Fragment {
         }
     }
 
+    // Update toggle button with necessary action
     public void onCheckInCompleted(Integer result){
-
-        if(Integer.valueOf(result) == -1){
+        Log.d("Check In Attempt: ", String.valueOf(result));
+        if(Integer.valueOf(result) == 0){
             Toast.makeText(((PassengerActivity) getActivity()).getApplicationContext(), "You were not able to check in", Toast.LENGTH_SHORT).show();
             toggleButton.setChecked(false);
 
@@ -117,6 +111,19 @@ public class Tab1Location extends Fragment {
             isCheckedIn = true;
         }
     }
+
+    public void onGetCheckedInStatusCompleted(String result){
+        int res = Integer.valueOf(result);
+        //Fail
+        if(res == 0){
+            // Not checked in
+        }//Success - checked in so toggle button to true;
+        if(res == 1){
+            toggleButton.setChecked(true);
+            isCheckedIn = true;
+        }
+    }
+
 }
 
 // Sends check in/out information to server
@@ -262,6 +269,95 @@ class checkOut extends AsyncTask<String, String, Integer> {
 
     protected void onPostExecute(final Integer response) {
         caller.onCheckOutCompleted(response);
+    }
+
+}class getCheckInStatus extends AsyncTask<String, String, String> {
+
+    Tab1Location caller;
+    String uRL;
+
+    public getCheckInStatus(Tab1Location dm, String url) {
+        super();
+        this.caller=dm;
+        this.uRL = url;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        caller.onGetCheckedInStatusCompleted(result);
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onCancelled(String s) {
+        super.onCancelled(s);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+
+        List<String> listOfPassengers = new ArrayList<String>();
+
+        String response = "";
+        String responseError = "";
+        HttpURLConnection conn = null;
+        try{
+            //Connect to URL
+            URL url = new URL(uRL);
+
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.connect();
+
+            int responseCode=conn.getResponseCode();
+
+            //HTTP_OK --> 200
+            //HTTP_CONFLICT --> 409
+            if (responseCode == HttpsURLConnection.HTTP_OK ) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+                return response;
+            }
+            else if(responseCode == HttpURLConnection.HTTP_CONFLICT){
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                while ((line=br.readLine()) != null) {
+                    responseError+=line;
+                }
+                System.out.print(responseError);
+                return responseError;
+            }
+            else {
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null){
+                conn.disconnect();
+            }
+
+        }
+        return response;
     }
 
 }

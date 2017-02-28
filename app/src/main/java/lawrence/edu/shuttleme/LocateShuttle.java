@@ -5,28 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,13 +25,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -96,11 +82,10 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
 
         Timer timer = new Timer();
 
+
         //DELAY: the time to the first execution
         //PERIODICAL_TIME: the time between each execution of your task.
         timer.schedule(timerTask, 1000, 10000);
-
-
     }
 
     // Interpret lat and long and show it on listview
@@ -256,7 +241,6 @@ public class RetrieveCoords extends AsyncTask<String, String, String> {
                 return responseError;
             }
             else {
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,7 +248,6 @@ public class RetrieveCoords extends AsyncTask<String, String, String> {
             if (conn != null){
                 conn.disconnect();
             }
-
         }
         return response;
     }

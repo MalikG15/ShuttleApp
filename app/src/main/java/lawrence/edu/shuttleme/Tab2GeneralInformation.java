@@ -3,11 +3,13 @@ package lawrence.edu.shuttleme;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.Map;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 
 public class Tab2GeneralInformation extends Fragment{
 
+
+
     View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,5 +29,7 @@ public class Tab2GeneralInformation extends Fragment{
         rootView = inflater.inflate(R.layout.tab2generalinformation,container,false);
         return rootView;
     }
+
+
 
 }
