@@ -53,13 +53,20 @@ public class Tab1Location extends Fragment {
         View rootView = inflater.inflate(R.layout.tab1location,container,false);
         id = ((PassengerActivity) getActivity()).getUserID();
         toggleButton = (ToggleButton) rootView.findViewById(R.id.checkInButton) ;
-        toggleButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+/*        toggleButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
+
+            }
+        });*/
+        toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 checkInNOut();
             }
         });
+
         // Will constantly update location
         /*if(isCheckedIn == true){
             final Handler h = new Handler();

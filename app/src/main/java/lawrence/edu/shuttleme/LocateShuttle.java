@@ -2,6 +2,7 @@ package lawrence.edu.shuttleme;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -51,6 +52,9 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
     GoogleMap mGoogleMap = null;
     private Double longitude = -88.4154;
     private Double lat = 44.2619;
+    float prevZoomLevel= 16.235184f;
+    // initialize boolean to know tab is already loaded or load first time
+    private boolean isFragmentLoaded=false;
 
     // Network URI
     public static final String hostName = "143.44.78.173:8080";
@@ -59,21 +63,18 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Create fragment to put map into fragment
-        FragmentManager fm = getChildFragmentManager();
-        SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    }
 
-        /*
-        */
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_locate_shuttle, null, false);
+        return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-
-        LatLng appleton = new LatLng(lat, longitude);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, 14.0f));
 
         locateshuttleobject = this;
 
@@ -81,9 +82,9 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
             @Override
             public void run() {
                 //CALL YOUR ASSYNC TASK HERE.
-
+                Log.d("Timer Task:", "Hello moto");
                 //Execute asynctask that will repeatedly retrieve coordinates
-                new RetrieveCoords(locateshuttleobject, "http://" + hostName  + "/shuttle/get?shuttleid=de748d23-d9f6-4f5b-8448-89bf0c5302e7").execute();
+                new RetrieveCoords(locateshuttleobject, "http://" + hostName  + "/shuttle/get?shuttleid=dbc8b0c3-a879-4848-a227-b763be16582c").execute();
             }
         };
 
@@ -98,7 +99,7 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
 
     // Interpret lat and long and show it on listview
     public void onRetrieveCoordinatesCompleted(String result) {
-
+        Log.d("New Coords Received: ", result);
         // Parse data - get lat and long values
         try {
             JSONObject jObject = new JSONObject(result);
@@ -108,18 +109,24 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
                     String longi = jObject.getString("longitude");
 
                     // Add a marker for Shuttle, and move the camera.
-                    if (lati == null || longi == null) {
+                    if (lati == "" || longi == "" || lati == null || longi == null) {
+
+                        LatLng appleton = new LatLng(lat, longitude);
+                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, prevZoomLevel));
+
                     }//Throw alert that coordinates were not retrieved
                     else{
                         lat = Double.valueOf(lati);
                         longitude = Double.valueOf(longi);
                         LatLng shuttle = new LatLng(lat, longitude);
+                        prevZoomLevel = mGoogleMap.getCameraPosition().zoom;
 
+                        Log.d("Updated zoom level:", String.valueOf(prevZoomLevel));
                         mGoogleMap.addMarker(new MarkerOptions()
                                 .title("Shuttle")
                                 .position(shuttle)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_shuttle)));
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shuttle, 14.5f));
+                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shuttle, prevZoomLevel));
                         System.out.print(lat+longitude);
                     }
                 } catch (JSONException e) {
@@ -131,7 +138,21 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
         }
     } // THROW ALERT IF EMPTY - otherwise show coords
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && !isFragmentLoaded ) {
+            // Load your data here or do network operations here
 
+
+            //Create fragment to put map into fragment
+            FragmentManager fm = getChildFragmentManager();
+            SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.activity_locate_shuttle);
+            mapFragment.getMapAsync(this);
+
+            isFragmentLoaded = true;
+        }
+    }
 public class RetrieveCoords extends AsyncTask<String, String, String> {
 
     LocateShuttle caller;
@@ -144,8 +165,28 @@ public class RetrieveCoords extends AsyncTask<String, String, String> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
     protected void onPostExecute(String result) {
         caller.onRetrieveCoordinatesCompleted(result);
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onCancelled(String s) {
+        super.onCancelled(s);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
     }
 
     @Override
@@ -186,7 +227,7 @@ public class RetrieveCoords extends AsyncTask<String, String, String> {
                 return responseError;
             }
             else {
-                return response;
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,6 +239,7 @@ public class RetrieveCoords extends AsyncTask<String, String, String> {
         }
         return response;
     }
-}
+
+    }
 
 }
