@@ -47,14 +47,20 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class LocateShuttle extends Fragment implements OnMapReadyCallback {
 
-    LocateShuttle locateshuttleobject;
-    View rootView;
-    GoogleMap mGoogleMap = null;
+    private LocateShuttle locateshuttleobject;
+    private GoogleMap mGoogleMap = null;
+    private Marker shuttleMarker;
     private Double longitude = -88.4154;
     private Double lat = 44.2619;
-    float prevZoomLevel= 16.235184f;
+
+    // Default zoom level, unless otherwise changed
+    private float prevZoomLevel= 16.235184f;
+
     // initialize boolean to know tab is already loaded or load first time
-    private boolean isFragmentLoaded=false;
+    private boolean isFragmentLoaded = false;
+
+    // initialize boolean to know marker hasnt been created
+    private boolean isFirst = true;
 
     // Network URI
     public static final String hostName = "143.44.78.173:8080";
@@ -82,7 +88,7 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
             @Override
             public void run() {
                 //CALL YOUR ASSYNC TASK HERE.
-                Log.d("Timer Task:", "Hello moto");
+
                 //Execute asynctask that will repeatedly retrieve coordinates
                 new RetrieveCoords(locateshuttleobject, "http://" + hostName  + "/shuttle/get?shuttleid=dbc8b0c3-a879-4848-a227-b763be16582c").execute();
             }
@@ -99,7 +105,7 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
 
     // Interpret lat and long and show it on listview
     public void onRetrieveCoordinatesCompleted(String result) {
-        Log.d("New Coords Received: ", result);
+        Log.d("Coordinates Received: ", result);
         // Parse data - get lat and long values
         try {
             JSONObject jObject = new JSONObject(result);
@@ -109,25 +115,48 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
                     String longi = jObject.getString("longitude");
 
                     // Add a marker for Shuttle, and move the camera.
+                    // Move camera position to appleton if we don't receive coordinates
                     if (lati == "" || longi == "" || lati == null || longi == null) {
 
                         LatLng appleton = new LatLng(lat, longitude);
                         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, prevZoomLevel));
 
-                    }//Throw alert that coordinates were not retrieved
+                    }
+                    // Update shuttle marker with new coordinates without changing camera position.
                     else{
-                        lat = Double.valueOf(lati);
-                        longitude = Double.valueOf(longi);
-                        LatLng shuttle = new LatLng(lat, longitude);
-                        prevZoomLevel = mGoogleMap.getCameraPosition().zoom;
+                        // If latitude and longitude hasn't change do nothing
+                        if(lati.equals(String.valueOf(lat)) && longi.equals( String.valueOf(longitude))){
 
-                        Log.d("Updated zoom level:", String.valueOf(prevZoomLevel));
-                        mGoogleMap.addMarker(new MarkerOptions()
-                                .title("Shuttle")
-                                .position(shuttle)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_shuttle)));
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shuttle, prevZoomLevel));
-                        System.out.print(lat+longitude);
+                        } // Otherwise update
+                        else{
+
+                            lat = Double.valueOf(lati);
+                            longitude = Double.valueOf(longi);
+
+                            LatLng shuttle = new LatLng(lat, longitude);
+
+                            // Create marker first time around
+                            if(isFirst){
+                                shuttleMarker = mGoogleMap.addMarker(new MarkerOptions()
+                                        .title("Shuttle")
+                                        .position(shuttle)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_shuttle)));
+                                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shuttle, prevZoomLevel));
+                                isFirst = false;
+                            }
+                            // Else update shuttle marker
+                            else{
+                                if(mGoogleMap.getCameraPosition().zoom != 16.235184f) {
+                                    prevZoomLevel = mGoogleMap.getCameraPosition().zoom;
+                                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shuttle, prevZoomLevel));
+                                }
+                                else{
+                                    shuttleMarker.setPosition(shuttle);
+                                }
+                            }
+                            Log.d("Updated zoom level:", String.valueOf(prevZoomLevel));
+
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
