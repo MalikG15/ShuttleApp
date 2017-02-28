@@ -81,6 +81,8 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
     private Button getLocation;
     private TextView latitudeText;
     private TextView longitudeText;
+    private TextView latitudeLabel;
+    private TextView longitudeLabel;
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -107,9 +109,11 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
         getSupportActionBar().setTitle("ShuttleMe");
 
         listView = (ListView) findViewById(R.id.check_list_view);
-        passengerTextView = (TextView) findViewById(R.id.checked_in_passengers);
+        //passengerTextView = (TextView) findViewById(R.id.checked_in_passengers);
         getLocation = (Button) findViewById(R.id.send_location);
 
+        latitudeLabel = (TextView) findViewById(R.id.latitudeLabel);
+        longitudeLabel = (TextView) findViewById(R.id.longitudeLabel);
         latitudeText = (TextView) findViewById(R.id.latitudeText);
         longitudeText = (TextView) findViewById(R.id.longitudeText);
 
@@ -135,7 +139,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
         // TODO: Clipboard id to get
 
         // TODO: Make populate passengers update automatically after 30 seconds or create a refresh button
-        populatePassengers();
+        //populatePassengers();
 
         if (mGoogleApiClient == null) {
             // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
@@ -147,7 +151,6 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
                     .addApi(AppIndex.API)
                     .build();
         }
-
     }
 
     @Override

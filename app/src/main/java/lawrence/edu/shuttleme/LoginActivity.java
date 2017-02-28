@@ -482,6 +482,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent(getApplicationContext(), PassengerActivity.class);
                 intent.putExtra("USER_ID", success[1]);
                 startActivity(intent);
+                finish();
                 Log.d("Login Activity", "Role: " + success[2]);
             } else if(success[2].equals("1")) {
                 // checkforExistingLogin();
@@ -493,12 +494,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 extras.putString("DRIVER_ID", success[1]);
                 intent.putExtras(extras);
                 startActivity(intent);
+                finish();
                 Log.d("Login Activity", "Role: " + success[2]);
             } else if(success[2].equals("2")) {
                 // Intent for admin activity
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(),RouteManager.class);
                 startActivity(intent);
+                finish();
                 Log.d("Login Activity", "Role: " + success[2]);
             } else if (success[2].equals("-1")) {
                 // Something went horribly wrong

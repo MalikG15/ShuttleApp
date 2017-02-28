@@ -61,7 +61,8 @@
         android:layout_alignBaseline="@+id/assign_route"
         android:layout_alignBottom="@+id/assign_route"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textSize="12sp" />
 
     <Button
         android:text="Create Stop"
@@ -71,7 +72,8 @@
         android:layout_alignBaseline="@+id/create_route"
         android:layout_alignBottom="@+id/create_route"
         android:layout_alignLeft="@+id/delete_route"
-        android:layout_alignStart="@+id/delete_route" />
+        android:layout_alignStart="@+id/delete_route"
+        android:textSize="12sp" />
 
     <Button
         android:text="Create New Route"
@@ -81,7 +83,8 @@
         android:layout_marginTop="13dp"
         android:layout_below="@+id/assign_route"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="12sp" />
 
     <Button
         android:text="Manage Drivers"
@@ -93,16 +96,8 @@
         android:layout_alignStart="@+id/edit_general_information"
         android:layout_marginTop="23dp"
         android:layout_alignRight="@+id/edit_general_information"
-        android:layout_alignEnd="@+id/edit_general_information" />
-
-    <Button
-        android:text="Edit General Information"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_general_information"
-        android:layout_below="@+id/manage_drivers"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_alignEnd="@+id/edit_general_information"
+        android:textSize="12sp"/>
 
     <Button
         android:text="Assign this Route"
@@ -111,6 +106,17 @@
         android:id="@+id/assign_route"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="12sp"
+        android:paddingBottom="5dp"/>
+
+    <Button
+        android:text="Edit General Information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_general_information"
+        android:textSize="12sp"
+        android:layout_below="@+id/manage_drivers"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
