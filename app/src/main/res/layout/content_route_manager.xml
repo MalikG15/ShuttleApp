@@ -75,17 +75,6 @@
         android:layout_alignStart="@+id/delete_route"
         android:textSize="12sp" />
 
-    <Button
-<<<<<<< HEAD
-        android:text="Create New Route"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_route"
-        android:layout_marginTop="13dp"
-        android:layout_below="@+id/assign_route"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="12sp" />
 
     <Button
         android:text="Manage Drivers"
