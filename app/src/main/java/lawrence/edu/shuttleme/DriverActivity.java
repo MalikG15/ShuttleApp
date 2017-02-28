@@ -104,6 +104,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
         setContentView(R.layout.activity_driver);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("ShuttleMe");
 
         listView = (ListView) findViewById(R.id.check_list_view);
         passengerTextView = (TextView) findViewById(R.id.checked_in_passengers);
@@ -269,6 +270,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
             case R.id.action_settings:
                 Intent intent = new Intent(this, LoginActivity.class);
                 this.startActivity(intent);
+                this.finish();
                 break;
             /*
             case R.id.menu_item2:

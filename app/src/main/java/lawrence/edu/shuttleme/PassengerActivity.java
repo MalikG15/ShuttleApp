@@ -50,6 +50,7 @@ public class PassengerActivity extends AppCompatActivity {
             userID = (String) savedInstanceState.getSerializable("USER_ID");
         }
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("ShuttleMe");
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -84,6 +85,7 @@ public class PassengerActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Intent intent = new Intent(this, LoginActivity.class);
                 this.startActivity(intent);
+                this.finish();
                 break;
             /*
             case R.id.menu_item2:
