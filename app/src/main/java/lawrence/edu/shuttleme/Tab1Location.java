@@ -2,51 +2,218 @@ package lawrence.edu.shuttleme;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static java.lang.Thread.sleep;
+import static lawrence.edu.shuttleme.R.id.container;
+import static lawrence.edu.shuttleme.R.id.estimated_times;
+import static lawrence.edu.shuttleme.R.id.time;
+
 /**
- * Created by elkingarcia on 2/7/17.
+ * Created by elkingarcia on 2/7/17
+ * with contributions by Malik Graham.
  */
 
 public class Tab1Location extends Fragment {
     private boolean isCheckedIn = false;
     private String id;
     private ToggleButton toggleButton;
+    private TableLayout estimatedTimes;
 
     public static final String hostName = "143.44.78.173:8080";
+
+    //New Member Variable
+    private final boolean running = true;
+    private LinkedHashMap<Integer, List<String>> stops;
+    private LinkedHashMap<Integer, Integer> prevTimeEstimate;
+
+    private String driverLat;
+    private String driverLong;
+
+    private int index = 0;
+
+    private String API_KEY = GoogleAPI.Google_API_KEY;
+    FragmentActivity parent = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // create a looping function that refreshes ETA information every 30 seconds
+            // looping function will call function to begin chain of gathering information
+
+        // initially find closest stop
+            // then calculate rolling ETA
+
+        // calculate a "change-in ETA"
+                // when checking for closest stop, compare with prev ETAs
+                // prev is less then driver is approaching that stop, and shift it to the top
+        // if prev ETA (hashmap) is empty then just use smallest value
+
+        // if returned time is less than 2 mins, then shuttle is located there!
+
+
+
+        // -> get initial times
+            // find lowest and then roll
+
+
+        // linkedhashmap ids -> timeEstimate
+            // array of prevTimeEstimates
+
+        // -------------------------------------------
+        // Data Structures: -> HashMap<Integer, String> indexOfArray to Stop Name
+                        // -> Array of Time Estimates
+
+
+        // Array Of PrevTimes is equal to null
+                // find the index of the min
+                    // if estimates <= 2
+                        // say that you are located here
+
+        // Not null
+            // find greatest change in prevTime and CurTime
+                // use index to iterate over hashmap and creates times
+                 // if estimates <= 2
+                 // say that you are located here
     }
+
+    // Overriding this method because it happens later in the cycle
+    // and therefore the table will not be equal to null.
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        /*new Thread(new Runnable() {
+            public void run() {
+
+                try {
+                    sleep(3000);
+
+                    while (running) {
+                        // do something in the loop
+                        if (stops == null) {
+                            new Tab1Location.getRoutes().execute();
+                        }
+                        new Tab1Location.getDriverLoc().execute();
+
+                        if (prevTimeEstimate == null) calculateInitial();
+
+                        calculateETA();
+                    }
+                }
+                catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }).start();*/
+        //public void callAsynchronousTask() {
+
+        // get initial size of the routes
+                // run the request for the size of the stops
+
+        if (stops == null) new getRoutes().execute();
+
+    }
+
+    public void updateTable() {
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            //parent = (FragmentActivity) getActivity();
+                            new getDriverLoc().execute();
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(doAsynchronousTask, 0, 200000); //execute in every 50000 ms
+    }
+
+    public void populateTable() {
+        int runningIndex = index;
+        boolean startLoop = false;
+        estimatedTimes.removeAllViews();
+        System.out.println("Just before we make the tables : " + index);
+        while (index != runningIndex || !startLoop) {
+            TableRow tableRow = new TableRow(parent.getApplicationContext());
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            tableRow.setLayoutParams(lp);
+            TextView name = new TextView(parent.getApplicationContext());
+            TextView ETA = new TextView(parent.getApplicationContext());
+            if (stops.containsKey(runningIndex)) name.setText(stops.get(runningIndex).get(2));
+            if (prevTimeEstimate.containsKey(runningIndex)) {
+                if (prevTimeEstimate.get(runningIndex) > 3) ETA.setText(" is about " + String.valueOf(prevTimeEstimate.get(runningIndex)) + " mins from the Shuttle.");
+                else ETA.setText(" is where the shuttle is located. ");
+            }
+            tableRow.addView(name);
+            ETA.setTextColor(Color.GREEN);
+            tableRow.addView(ETA);
+            estimatedTimes.addView(tableRow);
+
+            if (runningIndex + 1 > prevTimeEstimate.size()) runningIndex = 0;
+            else runningIndex++;
+
+            startLoop = true;
+        }
+    }
+
+
+    // get assigned route
+    // loop through stops
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -73,6 +240,11 @@ public class Tab1Location extends Fragment {
                 }
             }, delay);
         }*/
+
+        // Getting the estimated times, and using this table info in onStart since
+        // it's called later in the activity life cycle.
+        estimatedTimes = (TableLayout) rootView.findViewById(R.id.estimated_times);
+        parent = (FragmentActivity) getActivity();
         return rootView;
     }
     public void checkInNOut(){
@@ -109,6 +281,331 @@ public class Tab1Location extends Fragment {
             isCheckedIn = true;
         }
     }
+
+    class cascadeETA extends AsyncTask<Integer, Void, LinkedHashMap<Integer, Integer>> {
+
+        Integer indexForCascade;
+
+        public cascadeETA(Integer s) {
+            indexForCascade = s;
+        }
+
+        protected LinkedHashMap<Integer, Integer> doInBackground(Integer... urls) {
+            LinkedHashMap<Integer, Integer> timeEstimates = new LinkedHashMap<Integer, Integer>();
+
+            try {
+                String prevLat = driverLat;
+                String prevLong = driverLong;
+                boolean startLoop = false;
+                int runningIndex = indexForCascade;
+                int sum = 0;
+                while (indexForCascade != runningIndex || !startLoop) {
+                    int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                    HttpParams httpParams = new BasicHttpParams();
+                    HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                    HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                    HttpClient client = new DefaultHttpClient(httpParams);
+
+
+                    HttpGet request = new HttpGet("https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + prevLat + "," + prevLong +
+                            "&destinations=" + stops.get(runningIndex).get(0) + "," + stops.get(runningIndex).get(1) + "&key=" + API_KEY);
+
+                    HttpResponse response = client.execute(request);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+
+                    char[] party = new char[50000];
+                    int bytesread = reader.read(party, 0, party.length);
+                    String gResponse = new String(party, 0, bytesread);
+                    JSONObject test = new JSONObject(gResponse);
+                    //return test.getJSONArray("rows").getJSONArray("elements").getJSONObject("duration").getString("text");
+
+                    JSONArray ETA = test.getJSONArray("rows");
+
+                    System.out.print(test.toString() + " cascade");
+
+                    String time = ETA.getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getString("text");
+
+                    //System.out.println(time);
+                    //return Integer.valueOf(time.split(" ")[0]);
+                    //int testIndex = Integer.valueOf(time.split(" ")[0]);
+                    sum += Integer.valueOf(time.split(" ")[0]);
+                    timeEstimates.put(runningIndex, sum);
+
+                    prevLat = stops.get(runningIndex).get(0);
+                    prevLong = stops.get(runningIndex).get(1);
+
+                    if (runningIndex + 1 >= stops.size()) runningIndex = 0;
+                    else runningIndex++;
+
+                    startLoop = true;
+                    System.out.println(runningIndex);
+                }
+
+                System.out.println(indexForCascade.toString() + " before we go into OnPost");
+                return timeEstimates;
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(LinkedHashMap<Integer, Integer> result) {
+            int highestChangeInETA = Integer.MIN_VALUE;
+            int newIndex = -1;
+            if (prevTimeEstimate == null)  prevTimeEstimate = result;
+            else {
+                for (int s : prevTimeEstimate.keySet()) {
+                    if (result.containsKey(s)) {
+                        if (prevTimeEstimate.get(s) - result.get(s) > highestChangeInETA) {
+                            highestChangeInETA = prevTimeEstimate.get(s) - result.get(s);
+                            newIndex = s;
+                            System.out.println("This is it yall : " + newIndex);
+                        }
+                    }
+                }
+                prevTimeEstimate = result;
+                //index = newIndex;
+            }
+
+            if (newIndex != -1) index = newIndex;
+            else index = indexForCascade;
+
+            System.out.println("index is this " + index);
+            System.out.println("prev is this !!!" + prevTimeEstimate.toString());
+            //index = indexForCascade;
+            populateTable();
+        }
+
+    }
+
+    class getLeastTimeIndex extends AsyncTask<List<String>, Void, Integer> {
+
+        List<String> locations;
+
+        public getLeastTimeIndex(List<String> s) {
+            locations = s;
+        }
+
+        protected Integer doInBackground(List<String>... urls) {
+            int least = Integer.MAX_VALUE;
+            int leastIndex = 0;
+            try {
+                    for (int s : stops.keySet()) {
+                        int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                        HttpParams httpParams = new BasicHttpParams();
+                        HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                        HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                        HttpClient client = new DefaultHttpClient(httpParams);
+
+                        HttpGet request = new HttpGet("https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + locations.get(0) + "," + locations.get(1) +
+                                "&destinations=" + stops.get(s).get(0) + "," + stops.get(s).get(1) + "&key=" + API_KEY);
+
+                        HttpResponse response = client.execute(request);
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+
+                        char[] party = new char[50000];
+                        int bytesread = reader.read(party, 0, party.length);
+                        String gResponse = new String(party, 0, bytesread);
+                        JSONObject test = new JSONObject(gResponse);
+                        //return test.getJSONArray("rows").getJSONArray("elements").getJSONObject("duration").getString("text");
+
+                        JSONArray ETA = test.getJSONArray("rows");
+
+                        System.out.print(test.toString() + " least time");
+
+                        String time = ETA.getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getString("text");
+
+                        System.out.println(time);
+                        //return Integer.valueOf(time.split(" ")[0]);
+                        int testTime = Integer.valueOf(time.split(" ")[0]);
+                        if (testTime < least) {
+                            least = testTime;
+                            leastIndex = s;
+                        }
+
+                    }
+                return leastIndex;
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return -1;
+        }
+
+        protected void onPostExecute(Integer result) {
+            System.out.println(result + " is HERE");
+            prevTimeEstimate = new LinkedHashMap<>();
+            if (result != -1) new cascadeETA(result).execute();
+
+           System.out.print("Getting least did not work bro!");
+        }
+
+    }
+
+    class getDriverLoc extends AsyncTask<String, String, String> {
+
+        protected String doInBackground(String... urls) {
+            try {
+                //if (longitude != null && latitude != null) {
+                int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpClient client = new DefaultHttpClient(httpParams);
+
+                HttpGet request = new HttpGet("http://143.44.78.173:8080/shuttle/get?shuttleid=dbc8b0c3-a879-4848-a227-b763be16582c");
+
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+
+                //JSONObject root = new JSONObject(reader.readLine());
+                return reader.readLine();
+                //}
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        protected void onPostExecute(String result) {
+            System.out.println("Getting driver location");
+            System.out.println(result);
+            if (result == null) {
+                System.out.println("Receiving driver location did not work");
+                return;
+            }
+            try {
+                JSONObject driverLoc = new JSONObject(result);
+                driverLat = driverLoc.getString("latitude");
+                driverLong = driverLoc.getString("longitude");
+            }
+            catch (JSONException ex) {
+                ex.printStackTrace();
+            }
+            List<String> driverInfo = new ArrayList<String>();
+            driverInfo.add(driverLat);
+            driverInfo.add(driverLong);
+
+            // if prev time estimates is equal to null
+            if (prevTimeEstimate == null) new getLeastTimeIndex(driverInfo).execute();
+            else {
+                new cascadeETA(index).execute();
+                System.out.println("index is pleassseee" + index);
+            }
+            System.out.println(index);
+        }
+    }
+
+    class getRoutes extends AsyncTask<String, String, String> {
+
+        protected String doInBackground(String... urls) {
+            try {
+                int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpClient client = new DefaultHttpClient(httpParams);
+
+                HttpGet request = new HttpGet("http://143.44.78.173:8080/route/getassigned");
+
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+
+                //JSONObject root = new JSONObject(reader.readLine());
+                return reader.readLine();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return null;
+        }
+
+        // OnPostExecute grabs the stop ids and then
+        // places them in the list object.
+        protected void onPostExecute(String result) {
+            System.out.println(result + "HAHHAHAHAHAHA");
+            if (result == null) {
+                System.out.println("Getting the stopid's did not work");
+            }
+            try {
+                JSONObject jsonStop = new JSONObject(result);
+                String stopIds = jsonStop.getString("stops");
+                stops = new LinkedHashMap<Integer, List<String>>();
+                for (String s : stopIds.split(",")) {
+                    new Tab1Location.stopLoc(s).execute();
+                }
+                //currentStop = 0;
+            }
+            catch (JSONException ex) {
+                ex.printStackTrace();
+            }
+
+            updateTable();
+
+        }
+    }
+
+    class stopLoc extends AsyncTask<String, Void, String> {
+
+        String currentStopID;
+
+        public stopLoc(String s) {
+            currentStopID = s;
+        }
+
+        protected String doInBackground(String... urls) {
+            try {
+                int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                HttpParams httpParams = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                HttpClient client = new DefaultHttpClient(httpParams);
+                HttpGet request = new HttpGet("http://143.44.78.173:8080/stop/location?stopid=" + currentStopID);
+
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+
+                //JSONObject root = new JSONObject(reader.readLine());
+                return reader.readLine();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return null;
+        }
+
+        // This retrieves the essential information for a
+        // particular stop and then adds it to the global stop list
+        protected void onPostExecute(String result) {
+            System.out.println(result);
+            if (result == null) {
+                System.out.println("Getting the stop location information did not work");
+            }
+            try {
+                JSONObject stopInfo = new JSONObject(result);
+                List<String> infoContainer = new ArrayList<String>();
+                infoContainer.add(stopInfo.getString("latitude"));
+                infoContainer.add(stopInfo.getString("longitude"));
+                infoContainer.add(stopInfo.getString("name"));
+                stops.put(index++, infoContainer);
+                //stopIdList.add(currentStopID);
+                System.out.println(stops.toString());
+            }
+            catch (JSONException ex) {
+                ex.printStackTrace();
+            }
+
+            //----> important line of code
+            //updateTable();
+
+        }
+
+    }
+
 }
 
 // Sends check in/out information to server
@@ -166,6 +663,8 @@ class checkIn extends AsyncTask<String, String, Integer> {
         }
         return return_value;
     }
+
+
 
     protected void onPostExecute(final Integer response) {
         caller.onCheckInCompleted(response);
@@ -255,5 +754,8 @@ class checkOut extends AsyncTask<String, String, Integer> {
     protected void onPostExecute(final Integer response) {
         caller.onCheckOutCompleted(response);
     }
+
+
+
 
 }
