@@ -9,10 +9,10 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_request_register">Not a member? Register</string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_request_register">Register!</string>
     <string name="action_register">Register!</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_in_short">Login</string>
     <string name="phone_hint">Phone Number</string>
     <string name="prompt_email_conformation">Confirm Email</string>
     <string name="prompt_password_confirmation">Confirm Password</string>
@@ -36,5 +36,5 @@
 
     <string name="check_out">Check Out</string>
     <string name="check_in">Check In</string>
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>S
 </resources>

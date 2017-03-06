@@ -1,5 +1,6 @@
 package lawrence.edu.shuttleme;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class PassengerActivity extends AppCompatActivity {
     String userID;
@@ -49,6 +52,7 @@ public class PassengerActivity extends AppCompatActivity {
             userID = (String) savedInstanceState.getSerializable("USER_ID");
         }
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("ShuttleMe");
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -77,23 +81,24 @@ public class PassengerActivity extends AppCompatActivity {
     }
 
 
-    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, LoginActivity.class);
+                this.startActivity(intent);
+                this.finish();
+                break;
+            /*
+            case R.id.menu_item2:
+                // another startActivity, this is for item with id "menu_item2"
+                break;
+            */
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
-    */
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -112,11 +117,14 @@ public class PassengerActivity extends AppCompatActivity {
                     Tab1Location tab1 = new Tab1Location();
                     return tab1;
                 case 1:
+                    LocateShuttle tab3 = new LocateShuttle();
+                    return tab3;
+                case 2:
                     Tab2GeneralInformation tab2 = new Tab2GeneralInformation();
                     return tab2;
                 default:
-                    Tab1Location tab3 = new Tab1Location();
-                    return tab3;
+                    Tab1Location tab0 = new Tab1Location();
+                    return tab0;
             }
         }
 
@@ -132,6 +140,8 @@ public class PassengerActivity extends AppCompatActivity {
                 case 0:
                     return "Current Location";
                 case 1:
+                    return "Locate Shuttle";
+                case 2:
                     return "General Information";
             }
             return null;

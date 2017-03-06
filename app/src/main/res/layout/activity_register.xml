@@ -4,35 +4,26 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="lawrence.edu.shuttleme.LoginActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-
-            android:id="@+id/toolbar_actionbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:title="@string/title_activity_login"
-            android:titleTextColor="@color/default_color"
-            android:subtitleTextColor="@color/default_color">
-
-        </android.support.v7.widget.Toolbar>
+            android:background="?attr/colorPrimary"/>
 
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:id="@+id/login_form"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -48,7 +39,8 @@
 
                 <EditText
                     android:id="@+id/user_name"
-                    android:layout_width="fill_parent"
+                    android:layout_width="322dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:hint="Name"
                     android:inputType="text"/>
@@ -61,7 +53,8 @@
 
                 <EditText
                     android:id="@+id/phone"
-                    android:layout_width="fill_parent"
+                    android:layout_width="322dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:hint="@string/phone_hint"
                     android:inputType="phone"/>
@@ -74,7 +67,8 @@
 
                 <EditText
                     android:id="@+id/email"
-                    android:layout_width="match_parent"
+                    android:layout_width="322dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
@@ -87,22 +81,9 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/confirm_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email_conformation"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
                     android:id="@+id/password"
-                    android:layout_width="match_parent"
+                    android:layout_width="322dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
                     android:imeActionId="@+id/login"
@@ -113,31 +94,47 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/confirm_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password_confirmation"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"/>
-
-            </android.support.design.widget.TextInputLayout>
-
             <Button
                 android:id="@+id/register_button"
-                style="?android:textAppearanceSmall"
+                style="@style/AppTheme.NoActionBar"
+                android:layout_width="322dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:background="@color/Lawrence_secondary_blue"
+                android:textColor="@color/default_color"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                android:text="@string/action_register"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_register"
-                android:textStyle="bold" />
+                android:gravity="center|bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account?"
+                    android:textColor="@color/Lawrence_secondary_blue"
+                    android:layout_marginTop="65dp"/>
+
+                <Button
+                    android:id="@+id/back_to_login"
+                    style="@style/AppTheme.NoActionBar"
+                    android:layout_gravity="center|center_horizontal"
+                    android:layout_height="40dp"
+                    android:text="@string/action_sign_in"
+                    android:background="@color/Lawrence_primary_grey"
+                    android:textColor="@color/default_color"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textSize="15sp"
+                    android:layout_width="150dp"
+                    android:layout_marginTop="5dp"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

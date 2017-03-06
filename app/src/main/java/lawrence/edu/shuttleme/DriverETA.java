@@ -157,7 +157,7 @@ public class DriverETA extends AppCompatActivity {
                 HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
                 HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
                 HttpClient client = new DefaultHttpClient(httpParams);
-                HttpGet request = new HttpGet("http://143.44.78.173:8080/stop/getstoplocation?stopid=" + currentStopID);
+                HttpGet request = new HttpGet("http://143.44.78.173:8080/stop/location?stopid=" + currentStopID);
 
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));

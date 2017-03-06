@@ -15,7 +15,7 @@
             android:text="ShuttleMe!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/title"
+            android:id="@+id/splash_titlesplash_titlesplash_title"
             android:textSize="50sp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/send_location"
-            android:layout_below="@+id/title"
+            android:layout_below="@+id/splash_titlesplash_titlesplash_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="63dp"
             android:fontFamily="sans-serif-condensed" />
@@ -52,8 +52,8 @@
             android:textAppearance="@android:style/TextAppearance.Material.Large"
             android:fontFamily="sans-serif-condensed"
             android:layout_below="@+id/longitudeText"
-            android:layout_alignRight="@+id/title"
-            android:layout_alignEnd="@+id/title" />
+            android:layout_alignRight="@+id/splash_titlesplash_titlesplash_title"
+            android:layout_alignEnd="@+id/splash_titlesplash_titlesplash_title" />
 
         <TextView
             android:text="Latitude:"

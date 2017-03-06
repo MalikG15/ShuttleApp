@@ -82,7 +82,7 @@ public class DriverManager extends AppCompatActivity {
     }
 
     // Pre-Condition: Click on any radio button
-    public void getPassengerList(View view) {
+    public void getList(View view) {
 
         //require to import the RadioButton class
         RadioButton pb = (RadioButton) findViewById(R.id.passengerButton);
@@ -134,7 +134,6 @@ public class DriverManager extends AppCompatActivity {
 
     // Pre-Condition: Click on promote button, has to have item selected, has to be a driver
     public void demote(View view) {
-        Toast.makeText(getApplicationContext(), adapter.getItem(currentPos), Toast.LENGTH_SHORT).show();
         // Check that list has been retrieved and that its passenger list
         if(haveRetrieved == false){
             Toast.makeText(getApplicationContext(), "Error: Need to retrieve a list", Toast.LENGTH_SHORT).show();
@@ -323,8 +322,6 @@ class changeRole extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
-        List<String> listOfPassengers = new ArrayList<String>();
 
         String response = "";
         String responseError = "";

@@ -176,7 +176,7 @@ class Stop extends AsyncTask<String, Void, Integer> {
 
     @Override
     protected Integer doInBackground(String... params) {
-        int return_value = -1;
+        int return_value = 0;
 
         try {
             int TIMEOUT_MILLISEC = 10000;  // = 10 seconds

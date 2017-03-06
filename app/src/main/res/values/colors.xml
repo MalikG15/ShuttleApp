@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="pressed_color">#4b71b2</color>
     <color name="default_color">#ffffff</color>
     <color name="black">#000000</color>
+
+    <color name="Lawrence_primary_black">#231F20</color>
+    <color name="Lawrence_primary_blue">#004987</color>
+    <color name="Lawrence_primary_grey">#A7A9AC</color>
+
+    <color name="Lawrence_secondary_blue">#009ADD</color>
 
 </resources>

@@ -5,20 +5,8 @@
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#004987">
+    android:background="@color/Lawrence_primary_blue">
 
-
-    <TextView
-        android:text="Created by Elkin Garcia, Malik Graham and David of Jaglow"
-        android:id="@+id/textView4"
-        android:textColor="?attr/colorBackgroundFloating"
-        android:fontFamily="cursive"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/imageView2"
-        android:layout_alignLeft="@+id/imageView2"
-        android:layout_alignStart="@+id/imageView2" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -27,5 +15,30 @@
         android:id="@+id/imageView2"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Created by Elkin Garcia, Malik Graham and David Jaglowski"
+        android:id="@+id/textView4"
+        android:textColor="@color/Lawrence_secondary_blue"
+        android:fontFamily="cursive"
+        android:typeface="serif"
+        android:layout_marginTop="15dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp" />
+
+    <TextView
+        android:text="ShuttleMe"
+        android:id="@+id/splash_title"
+        android:textColor="@color/Lawrence_secondary_blue"
+        android:textSize="50dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:layout_above="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:typeface="serif" />
 
 </RelativeLayout>

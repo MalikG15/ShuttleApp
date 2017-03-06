@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,8 +60,10 @@ public class RouteManager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_manager);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("ShuttleMe");
 
         mSpinnerView = (Spinner) findViewById(R.id.route_list_spinner);
         mRouteDescriptionView = (TextView) findViewById(R.id.route_description);
@@ -78,7 +83,7 @@ public class RouteManager extends AppCompatActivity {
         descriptions.put(two, "This is the second route! You know this MANNNN");*/
 
         // Execute a AssignRoute task using selected route when button pressed
-        mAssignRouteButton = (Button) findViewById(R.id.assign_route);
+        mAssignRouteButton = (Button) findViewById(R.id.delete_stop);
         mAssignRouteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -108,7 +113,7 @@ public class RouteManager extends AppCompatActivity {
         });
 
         // Go to Create Route Activity when button pressed
-        mCreateRouteButton = (Button) findViewById(R.id.create_route);
+        mCreateRouteButton = (Button) findViewById(R.id.finalize_route);
         mCreateRouteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -131,6 +136,34 @@ public class RouteManager extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_passenger, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, LoginActivity.class);
+                this.startActivity(intent);
+                this.finish();
+                break;
+            /*
+            case R.id.menu_item2:
+                // another startActivity, this is for item with id "menu_item2"
+                break;
+            */
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     // After response from server, parse JSON, get all routes

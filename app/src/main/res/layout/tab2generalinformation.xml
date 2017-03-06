@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:theme="@style/AppTheme.NoActionBar"
     tools:context="lawrence.edu.shuttleme.Tab2GeneralInformation">
 
     <TextView
@@ -15,12 +16,13 @@
         android:text="General Information"/>
 
     <TextView
-        android:text="This page will be populated with general information regarding the shuttle system at Lawrence University"
+        android:text="http://www.lawrence.edu/mw/shopping_shuttle.pdf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="67dp"
-        android:id="@+id/textView3"
+        android:id="@+id/info_view"
         android:layout_below="@+id/section_label"
         android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

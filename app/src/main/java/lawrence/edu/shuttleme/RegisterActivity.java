@@ -40,8 +40,8 @@ public class RegisterActivity extends AppCompatActivity {
     // UI references
     private EditText mEmailView;
     private EditText mPasswordView;
-    private EditText mEmailConfirmView;
-    private EditText mPasswordConfirmView;
+    //private EditText mEmailConfirmView;
+    //private EditText mPasswordConfirmView;
     private EditText mUsernameView;
     private EditText mPhoneNumberView;
 
@@ -55,8 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mEmailConfirmView = (EditText) findViewById(R.id.confirm_email);
-        mPasswordConfirmView = (EditText) findViewById(R.id.confirm_password);
+        //mEmailConfirmView = (EditText) findViewById(R.id.confirm_email);
+        //mPasswordConfirmView = (EditText) findViewById(R.id.confirm_password);
         mUsernameView = (EditText) findViewById(R.id.user_name);
         mPhoneNumberView = (EditText) findViewById(R.id.phone);
 
@@ -68,31 +68,19 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        setSupportActionBar(mActionBarToolbar);
-        getSupportActionBar().setTitle("Register");
-
-        /*
-
-        <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button mBackToLoginButton = (Button) findViewById(R.id.back_to_login);
+        mBackToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
-        */
 
-
+        Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mActionBarToolbar);
+        getSupportActionBar().setTitle("Register");
     }
 
     @Override
@@ -104,16 +92,16 @@ public class RegisterActivity extends AppCompatActivity {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
-        mEmailConfirmView.setError(null);
-        mPasswordConfirmView.setError(null);
+        //mEmailConfirmView.setError(null);
+        //mPasswordConfirmView.setError(null);
         mUsernameView.setError(null);
         mPhoneNumberView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        String emailC = mEmailConfirmView.getText().toString();
-        String passwordC = mPasswordConfirmView.getText().toString();
+        //String emailC = mEmailConfirmView.getText().toString();
+        //String passwordC = mPasswordConfirmView.getText().toString();
         String phoneNumber = mPhoneNumberView.getText().toString();
         String name = mUsernameView.getText().toString();
 
@@ -133,17 +121,19 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         // Check for a valid password, if the user entered one and that the passwords match.
-        if (!TextUtils.isEmpty(password) && !TextUtils.isEmpty(passwordC) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password)&& !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
+        /*
         if(!(password.equals(passwordC))) {
             mPasswordView.setError(getString(R.string.error_password_mismatch));
             focusView = mPasswordView;
             cancel = true;
         }
+        */
 
         // Check for a valid email address and that both emails match.
         if (TextUtils.isEmpty(email)) {
@@ -151,16 +141,19 @@ public class RegisterActivity extends AppCompatActivity {
             focusView = mEmailView;
             cancel = true;
         }
+        /*
         if (TextUtils.isEmpty(emailC)) {
             mEmailConfirmView.setError(getString(R.string.error_field_required));
             focusView = mEmailConfirmView;
             cancel = true;
         }
+        */
         if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
         }
+        /*
         if (!isEmailValid(emailC)) {
             mEmailConfirmView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailConfirmView;
@@ -171,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
             focusView = mEmailView;
             cancel = true;
         }
-
+        */
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -209,7 +202,6 @@ public class RegisterActivity extends AppCompatActivity {
             json = "{\"email\":" + email + ",\"name\":" + name +
                     ",\"password\":" + password + ",\"phonenumber\":" + phoneNumber +
                     ",\"role\":\"0\"}";
-
         }
 
         @Override
