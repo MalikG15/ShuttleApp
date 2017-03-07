@@ -507,7 +507,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } else if (success[2].equals("-1")) {
                 // Something went horribly wrong
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), MainActivity.class);
+                intent.setClass(getApplicationContext(), DriverETA.class);
                 startActivity(intent);
             }
                 return;

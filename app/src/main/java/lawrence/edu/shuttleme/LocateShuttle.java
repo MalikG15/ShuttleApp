@@ -85,7 +85,7 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
 
         //DELAY: the time to the first execution
         //PERIODICAL_TIME: the time between each execution of your task.
-        timer.schedule(timerTask, 1000, 10000);
+        timer.schedule(timerTask, 0, 10000);
     }
 
     // Interpret lat and long and show it on listview
