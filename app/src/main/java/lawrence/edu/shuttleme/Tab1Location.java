@@ -39,6 +39,7 @@ import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -83,6 +84,11 @@ public class Tab1Location extends Fragment {
     private String API_KEY = GoogleAPI.Google_API_KEY;
     FragmentActivity parent = null;
 
+    ArrayList<String> simulatedLats;
+    ArrayList<String> simulatedLongs;
+
+    int simulatedIndex = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +130,102 @@ public class Tab1Location extends Fragment {
                 // use index to iterate over hashmap and creates times
                  // if estimates <= 2
                  // say that you are located here
+
+        simulatedLats = new ArrayList<String>();
+        simulatedLongs = new ArrayList<String>();
+
+        simulatedLats.add("44.262359");
+        simulatedLongs.add("-88.398098");
+        simulatedLats.add("44.262924");
+        simulatedLongs.add("-88.399720");
+        simulatedLats.add("44.262932");
+        simulatedLongs.add("-88.399597");
+        simulatedLats.add("44.262382");
+        simulatedLongs.add("-88.399611");
+        simulatedLats.add("44.261810");
+        simulatedLongs.add("-88.399643");
+        simulatedLats.add("44.261829");
+        simulatedLongs.add("-88.400970");
+        simulatedLats.add("44.261805");
+        simulatedLongs.add("-88.402821");
+        simulatedLats.add("44.261859");
+        simulatedLongs.add("-88.404354");
+        simulatedLats.add("44.261848");
+        simulatedLongs.add("-88.405965");
+        simulatedLats.add("44.261825");
+        simulatedLongs.add("-88.407242");
+        simulatedLats.add("44.261825");
+        simulatedLongs.add("-88.408733");
+        simulatedLats.add("44.261833");
+        simulatedLongs.add("-88.410825");
+        simulatedLats.add("44.261795");
+        simulatedLongs.add("-88.412091");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.413722");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.415728");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.417466");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.419097");
+        simulatedLats.add("44.261872");
+        simulatedLongs.add("-88.420760");
+        simulatedLats.add("44.261849");
+        simulatedLongs.add("-88.422423");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.424086");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.425749");
+        simulatedLats.add("44.261856");
+        simulatedLongs.add("-88.427122");
+        simulatedLats.add("44.261864");
+        simulatedLongs.add("-88.428281");
+        simulatedLats.add("44.261856");
+        simulatedLongs.add("-88.429933");
+        simulatedLats.add("44.261887");
+        simulatedLongs.add("-88.430866");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.432089");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.433462");
+        simulatedLats.add("44.261849");
+        simulatedLongs.add("-88.435490");
+        simulatedLats.add("44.261841");
+        simulatedLongs.add("-88.438258");
+        simulatedLats.add("44.261864");
+        simulatedLongs.add("-88.440683");
+        simulatedLats.add("44.261833");
+        simulatedLongs.add("-88.443397");
+        simulatedLats.add("44.261795");
+        simulatedLongs.add("-88.445908");
+        simulatedLats.add("44.261798");
+        simulatedLongs.add("-88.448748");
+        simulatedLats.add("44.261829");
+        simulatedLongs.add("-88.450904");
+        simulatedLats.add("44.261821");
+        simulatedLongs.add("-88.452985");
+        simulatedLats.add("44.261829");
+        simulatedLongs.add("-88.454873");
+        simulatedLats.add("44.261821");
+        simulatedLongs.add("-88.455871");
+        simulatedLats.add("44.261806");
+        simulatedLongs.add("-88.458285");
+        simulatedLats.add("44.261814");
+        simulatedLongs.add("-88.460954");
+        simulatedLats.add("44.263103");
+        simulatedLongs.add("-88.460992");
+        simulatedLats.add("44.264355");
+        simulatedLongs.add("-88.460992");
+        simulatedLats.add("44.265975");
+        simulatedLongs.add("-88.461005");
+        simulatedLats.add("44.267085");
+        simulatedLongs.add("-88.461145");
+        simulatedLats.add("44.267131");
+        simulatedLongs.add("-88.461821");
+        simulatedLats.add("44.266747");
+        simulatedLongs.add("-88.462948");
+        simulatedLats.add("44.266893");
+        simulatedLongs.add("-88.463613");
     }
 
     // Overriding this method because it happens later in the cycle
@@ -174,8 +276,20 @@ public class Tab1Location extends Fragment {
                 handler.post(new Runnable() {
                     public void run() {
                         try {
+                            // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
+                            if (simulatedIndex >= simulatedLats.size() || simulatedIndex >= simulatedLongs.size()) return;
+                            // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
+
+
                             //parent = (FragmentActivity) getActivity();
-                            new getDriverLoc().execute();
+                            //if(isFragVisible == true){
+                            System.out.println(simulatedIndex + "---------------------- at a size of ----------------------" + simulatedLats.size());
+                                new getDriverLoc().execute();
+                            //}
+                            //else return;
+                            //if(isFragVisible==true){
+                               // new getDriverLoc().execute();
+                            //}
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -184,31 +298,34 @@ public class Tab1Location extends Fragment {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000); //execute in every 50000 ms
+        timer.schedule(doAsynchronousTask, 0, 5000); //execute in every 50000 ms
     }
 
     public void populateTable() {
         int runningIndex = index;
         boolean startLoop = false;
+        int sum = 0;
         estimatedTimes.removeAllViews();
-        System.out.println("Just before we make the tables : " + index);
+        System.out.println("Just before we make the tables : " + prevTimeEstimate.get(runningIndex));
         while (index != runningIndex || !startLoop) {
             TableRow tableRow = new TableRow(parent.getApplicationContext());
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             tableRow.setLayoutParams(lp);
             TextView name = new TextView(parent.getApplicationContext());
             TextView ETA = new TextView(parent.getApplicationContext());
+            //System.out.println("Just before we make the tables : " + prevTimeEstimate.toString() + runningIndex);
+            sum += prevTimeEstimate.get(runningIndex);
             if (stops.containsKey(runningIndex)) name.setText(stops.get(runningIndex).get(2));
             if (prevTimeEstimate.containsKey(runningIndex)) {
-                if (prevTimeEstimate.get(runningIndex) > 3) ETA.setText(" is about " + String.valueOf(prevTimeEstimate.get(runningIndex)) + " mins from the Shuttle.");
-                else ETA.setText(" is where the shuttle is located. ");
+                if (prevTimeEstimate.get(runningIndex) > 2) ETA.setText(" : about " + String.valueOf(sum) + " mins away.");
+                else ETA.setText(" : shuttle is here. ");
             }
             tableRow.addView(name);
-            ETA.setTextColor(Color.GREEN);
+            ETA.setTextColor(Color.RED);
             tableRow.addView(ETA);
             estimatedTimes.addView(tableRow);
 
-            if (runningIndex + 1 > prevTimeEstimate.size()) runningIndex = 0;
+            if (runningIndex + 1 >= prevTimeEstimate.size()) runningIndex = 0;
             else runningIndex++;
 
             startLoop = true;
@@ -350,7 +467,7 @@ public class Tab1Location extends Fragment {
                     //System.out.println(time);
                     //return Integer.valueOf(time.split(" ")[0]);
                     //int testIndex = Integer.valueOf(time.split(" ")[0]);
-                    sum += Integer.valueOf(time.split(" ")[0]);
+                    sum = Integer.valueOf(time.split(" ")[0]);
                     timeEstimates.put(runningIndex, sum);
 
                     prevLat = stops.get(runningIndex).get(0);
@@ -378,14 +495,23 @@ public class Tab1Location extends Fragment {
             int newIndex = -1;
             if (prevTimeEstimate == null)  prevTimeEstimate = result;
             else {
-                for (int s : prevTimeEstimate.keySet()) {
-                    if (result.containsKey(s)) {
-                        if (prevTimeEstimate.get(s) - result.get(s) > highestChangeInETA) {
-                            highestChangeInETA = prevTimeEstimate.get(s) - result.get(s);
-                            newIndex = s;
-                            System.out.println("This is it yall : " + newIndex);
+                if (result != null) {
+                    for (int s : result.keySet()) {
+                        if (prevTimeEstimate != null && prevTimeEstimate.containsKey(s)) {
+                            System.out.println(Math.abs(prevTimeEstimate.get(s) - result.get(s)) + " at this place " + stops.get(s).get(2));
+                            if (prevTimeEstimate.get(s) - result.get(s) > highestChangeInETA) {
+                                highestChangeInETA = prevTimeEstimate.get(s) - result.get(s);
+                                newIndex = s;
+                                System.out.println("This is it yall : " + newIndex);
+                                //break;
+                            }
                         }
                     }
+                    System.out.println("1 is this !!!" + prevTimeEstimate.toString());
+                    System.out.println("2 is this !!!" + result.toString());
+                    System.out.println(driverLat + " -------- " + driverLong);
+                    prevTimeEstimate = result;
+                    //index = newIndex;
                 }
                 prevTimeEstimate = result;
                 //index = newIndex;
@@ -458,7 +584,7 @@ public class Tab1Location extends Fragment {
 
         protected void onPostExecute(Integer result) {
             System.out.println(result + " is HERE");
-            prevTimeEstimate = new LinkedHashMap<>();
+            //prevTimeEstimate = new LinkedHashMap<>();
             if (result != -1) new cascadeETA(result).execute();
 
            System.out.print("Getting least did not work bro!");
@@ -502,8 +628,12 @@ public class Tab1Location extends Fragment {
             }
             try {
                 JSONObject driverLoc = new JSONObject(result);
-                driverLat = driverLoc.getString("latitude");
-                driverLong = driverLoc.getString("longitude");
+
+                driverLat = simulatedLats.get(simulatedIndex);
+                driverLong = simulatedLongs.get(simulatedIndex++);
+
+               // driverLat = driverLoc.getString("latitude");
+               // driverLong = driverLoc.getString("longitude");
             }
             catch (JSONException ex) {
                 ex.printStackTrace();
