@@ -152,8 +152,8 @@ public class RouteManager extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.action_settings:
                 Intent intent = new Intent(this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
-                this.finish();
                 break;
             /*
             case R.id.menu_item2:

@@ -480,14 +480,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         protected void redirectByRole(String[] success) {
             if(success[2].equals("0")) {
-            // Intent for user activity
+                // Intent for user activity
                 Intent intent = new Intent(getApplicationContext(), PassengerActivity.class);
                 intent.putExtra("USER_ID", success[1]);
                 startActivity(intent);
-                finish();
                 Log.d("Login Activity", "Role: " + success[2]);
             } else if(success[2].equals("1")) {
-                // checkforExistingLogin();
                 // Intent for driver activity
                 Intent intent = new Intent();
                 Bundle extras = new Bundle();
@@ -496,14 +494,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 extras.putString("DRIVER_ID", success[1]);
                 intent.putExtras(extras);
                 startActivity(intent);
-                finish();
                 Log.d("Login Activity", "Role: " + success[2]);
             } else if(success[2].equals("2")) {
                 // Intent for admin activity
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(),RouteManager.class);
                 startActivity(intent);
-                finish();
                 Log.d("Login Activity", "Role: " + success[2]);
             } else if (success[2].equals("-1")) {
                 // Something went horribly wrong
@@ -511,10 +507,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 mEmailView.setError("This email/password does not exist");
                 focusView = mEmailView;
                 focusView.requestFocus();
-
             }
                 return;
-            // TODO: Redirect the user based on their role
         }
     }
 }

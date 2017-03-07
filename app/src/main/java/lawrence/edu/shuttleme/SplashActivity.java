@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -32,9 +33,9 @@ public class SplashActivity extends AppCompatActivity {
             public void run(){
                 try{
                     sleep(3000);
-
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 catch(InterruptedException e){
                     e.printStackTrace();
