@@ -177,9 +177,9 @@ public class Tab1Location extends Fragment {
                     public void run() {
                         try {
                             //parent = (FragmentActivity) getActivity();
-                            if(isFragVisible==true){
+                            //if(isFragVisible==true){
                                 new getDriverLoc().execute();
-                            }
+                            //}
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -313,6 +313,19 @@ public class Tab1Location extends Fragment {
         }
     }
 
+
+    public void onGetCheckedInStatusCompleted(String result){
+        int res = Integer.valueOf(result);
+        //Fail
+        if(res == 0){
+            // Not checked in
+        }//Success - checked in so toggle button to true;
+        if(res == 1){
+            toggleButton.setChecked(true);
+            isCheckedIn = true;
+        }
+
+    }
 
     class cascadeETA extends AsyncTask<Integer, Void, LinkedHashMap<Integer, Integer>> {
 
@@ -638,18 +651,6 @@ public class Tab1Location extends Fragment {
         }
 
 
-    public void onGetCheckedInStatusCompleted(String result){
-        int res = Integer.valueOf(result);
-        //Fail
-        if(res == 0){
-            // Not checked in
-        }//Success - checked in so toggle button to true;
-        if(res == 1){
-            toggleButton.setChecked(true);
-            isCheckedIn = true;
-        }
-
-    }
 
 }
 
@@ -819,7 +820,7 @@ class checkOut extends AsyncTask<String, String, Integer> {
 
     @Override
     protected void onPostExecute(String result) {
-        //caller.onGetCheckedInStatusCompleted(result);
+        caller.onGetCheckedInStatusCompleted(result);
     }
 
     @Override

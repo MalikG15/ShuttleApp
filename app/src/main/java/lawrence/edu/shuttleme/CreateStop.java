@@ -281,6 +281,7 @@ class Stop extends AsyncTask<String, Void, Integer> {
 
         } catch(Exception ex) {
             Log.d("Create Stop Activity","Exception in doPost:" + ex.toString());
+            Toast.makeText(callback.getApplicationContext(), "Failed to post to server", Toast.LENGTH_SHORT).show();
         }
         return return_value;
     }
