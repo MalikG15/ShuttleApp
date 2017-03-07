@@ -92,7 +92,7 @@ public class Tab1Location extends Fragment {
 
 
     // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
-    int simulatedIndex = 0;
+    int simulatedIndex = 30;
 
     ArrayList<String> simulatedLats;
     ArrayList<String> simulatedLongs;
@@ -547,7 +547,7 @@ public class Tab1Location extends Fragment {
                     for (int s : result.keySet()) {
                         if (prevTimeEstimate != null && prevTimeEstimate.containsKey(s)) {
                             System.out.println(Math.abs(prevTimeEstimate.get(s) - result.get(s)) + " at this place " + stops.get(s).get(2));
-                            if (prevTimeEstimate.get(s) - result.get(s) > highestChangeInETA) {
+                            if (prevTimeEstimate.get(s) - result.get(s) > 0 && prevTimeEstimate.get(s) - result.get(s) > highestChangeInETA) {
                                 highestChangeInETA = prevTimeEstimate.get(s) - result.get(s);
                                 newIndex = s;
                                 System.out.println("This is it yall : " + newIndex);
