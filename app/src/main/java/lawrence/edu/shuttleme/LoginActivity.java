@@ -463,10 +463,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             */
 
-            if(!success[2].equals("")) {
+            //if(!success[2].equals("")) {
                 redirectByRole(success);
                 System.out.print("Success means this: " + success[2]);
                 Log.d("Login Activity", success[2]);
+            /*
             }
             else {
                 Log.d("Login Activity", "Need to create an account or Server issue! " + success[1]);
@@ -474,6 +475,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 // TODO: Need to notify the user that they need to create an account since their email/pass combo is invalid or that there was an error
             }
+            */
         }
 
         @Override
@@ -509,13 +511,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
                 finish();
                 Log.d("Login Activity", "Role: " + success[2]);
-            } else if (success[2].equals("-1")) {
+            } else if (success[2].equals("")) {
                 // Something went horribly wrong
                 View focusView = null;
-                mEmailView.setError("This email/password does not exist");
+                mEmailView.setError("Email-password combination does not exist");
                 focusView = mEmailView;
                 focusView.requestFocus();
-
             }
                 return;
             // TODO: Redirect the user based on their role
