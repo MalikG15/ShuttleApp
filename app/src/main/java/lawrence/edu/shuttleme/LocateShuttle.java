@@ -191,6 +191,9 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
         LatLng appleton = new LatLng(44.2623821, -88.398101);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, 16f));
 
+        // Check if shuttleid exist first, if not don't display anything for both ETA and locations
+        // Else run simulation
+
         // Needs to be deleted
         simulateShuttle();
 

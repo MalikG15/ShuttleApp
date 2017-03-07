@@ -54,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mEmailView = (EditText) findViewById(R.id.email);
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.register_password);
         //mEmailConfirmView = (EditText) findViewById(R.id.confirm_email);
         //mPasswordConfirmView = (EditText) findViewById(R.id.confirm_password);
         mUsernameView = (EditText) findViewById(R.id.user_name);
@@ -246,6 +246,7 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(intent);
 
                 Log.d("Register Activity", "Registration successful: " + success);
+                Toast.makeText(getApplicationContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
 
             } else if (success == 0){
                 mEmailView.setError(getString(R.string.error_email_taken));
@@ -253,6 +254,7 @@ public class RegisterActivity extends AppCompatActivity {
                 focusView.requestFocus();
 
                 Log.d("Register Activity", "Email already exists: " + success);
+
                 // TODO: Need to notify the user that the email given already exists
             } else {
                 Log.d("Register Activity", "Server issue:  " + success);

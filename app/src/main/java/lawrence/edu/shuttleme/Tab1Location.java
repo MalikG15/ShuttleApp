@@ -204,8 +204,8 @@ public class Tab1Location extends Fragment {
             TextView ETA = new TextView(parent.getApplicationContext());
             if (stops.containsKey(runningIndex)) name.setText(stops.get(runningIndex).get(2));
             if (prevTimeEstimate.containsKey(runningIndex)) {
-                if (prevTimeEstimate.get(runningIndex) > 3) ETA.setText(" is about " + String.valueOf(prevTimeEstimate.get(runningIndex)) + " mins from the Shuttle.");
-                else ETA.setText(" is where the shuttle is located. ");
+                if (prevTimeEstimate.get(runningIndex) > 3) ETA.setText(" : about " + String.valueOf(prevTimeEstimate.get(runningIndex)) + " mins away.");
+                else ETA.setText(" : shuttle is here. ");
             }
             tableRow.addView(name);
             ETA.setTextColor(Color.GREEN);
