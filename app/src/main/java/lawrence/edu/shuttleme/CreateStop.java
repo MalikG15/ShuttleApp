@@ -21,9 +21,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class CreateStop extends AppCompatActivity {
 
@@ -32,9 +39,6 @@ public class CreateStop extends AppCompatActivity {
     private EditText mAddressView;
     private EditText mCityView;
     private EditText mStateView;
-    private EditText mZipCodeView;
-    private EditText mLatitudeView;
-    private EditText mLongitudeView;
 
     // Network URI
     public static final String hostName = "143.44.78.173:8080";
@@ -52,9 +56,6 @@ public class CreateStop extends AppCompatActivity {
         mAddressView = (EditText) findViewById(R.id.address);
         mCityView = (EditText) findViewById(R.id.city);
         mStateView = (EditText) findViewById(R.id.state);
-        mZipCodeView = (EditText) findViewById(R.id.zip_code);
-        mLatitudeView = (EditText) findViewById(R.id.latitude);
-        mLongitudeView = (EditText) findViewById(R.id.longitude);
 
         Button mCreateStopButton = (Button) findViewById(R.id.create_stop);
         mCreateStopButton.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +72,6 @@ public class CreateStop extends AppCompatActivity {
         mAddressView.setError(null);
         mCityView.setError(null);
         mStateView.setError(null);
-        mZipCodeView.setError(null);
-        mLatitudeView.setError(null);
-        mLongitudeView.setError(null);
 
 
         // Store values at the time of the login attempt.
@@ -81,9 +79,6 @@ public class CreateStop extends AppCompatActivity {
         String address = mAddressView.getText().toString();
         String city = mCityView.getText().toString();
         String state = mStateView.getText().toString();
-        String zipcode = mZipCodeView.getText().toString();
-        String latitude = mLatitudeView.getText().toString();
-        String longitude = mLongitudeView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -112,25 +107,47 @@ public class CreateStop extends AppCompatActivity {
             focusView = mStateView;
             cancel = true;
         }
-        // Check that the user entered a name
-        if (TextUtils.isEmpty(zipcode)) {
-            mZipCodeView.setError(getString(R.string.error_field_required));
-            focusView = mZipCodeView;
-            cancel = true;
+        else {
+            // Retrieve Coordinates
+            String adr = mAddressView.getText().toString();
+            adr.replaceAll("\\s+", "+");
+            String ste = mStateView.getText().toString();
+            ste.replaceAll("\\s+", "+");
+            String cty = mCityView.getText().toString();
+            ste.replaceAll("\\s+", "+");
+
+            new getCoordinates(adr, cty, ste, this).execute();
         }
-        // Check that the user entered a name
-        if (TextUtils.isEmpty(latitude)) {
-            mLatitudeView.setError(getString(R.string.error_field_required));
-            focusView = mLatitudeView;
-            cancel = true;
+    }
+
+    // After retrieving coordinates, post stop to database
+    public void onGetCoordinatesCompleted(String result){
+
+        // Store values at the time of the login attempt.
+        String name = mNameView.getText().toString();
+        String address = mAddressView.getText().toString();
+        String city = mCityView.getText().toString();
+        String state = mStateView.getText().toString();
+        String latitude = "";
+        String longitude = "";
+
+        // Parse data
+        try {
+            JSONArray res = new JSONObject(result).getJSONArray("results");
+            JSONObject addcomp = res.getJSONObject(0);
+            JSONObject geom = addcomp.getJSONObject("geometry");
+            // Pulling items from the array
+            JSONObject loc = geom.getJSONObject("location");
+            latitude = loc.getString("lat");
+            longitude = loc.getString("lng");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Couldn't find coordinates for this address", Toast.LENGTH_SHORT).show();
         }
-        // Check that the user entered a name
-        if (TextUtils.isEmpty(longitude)) {
-            mLongitudeView.setError(getString(R.string.error_field_required));
-            focusView = mLongitudeView;
-            cancel = true;
-        } else {
-            new Stop(name, address, city, state, zipcode, latitude, longitude, hostName, this).execute();
+        if(latitude != "" && longitude != ""){
+            // Post Stop
+            new Stop(name, address, city, state, latitude, longitude, hostName, this).execute();
         }
 
     }
@@ -151,18 +168,80 @@ public class CreateStop extends AppCompatActivity {
             startActivity(intent);
 
             Log.d("Create Stop Activity", "Stop Creation successful: " + success);
-
         } else if (success == 0) {
-
+            Toast.makeText(getApplicationContext(), "Failed to create stop. Stop either exists or failed to post in database", Toast.LENGTH_SHORT).show();
             Log.d("Create Stop Activity", "Failed to create stop: " + success);
             // TODO: Need to notify the user that the email given already exists
         } else {
+            Toast.makeText(getApplicationContext(), "There was a server issue, failed to create stop", Toast.LENGTH_SHORT).show();
             Log.d("Create Stop Activity", "Server issue:  " + success);
             // TODO: Some useful message about the error
         }
 
     }
+}
 
+class getCoordinates extends AsyncTask<String, Void, String> {
+    CreateStop caller;
+    String _url;
+    private String API_KEY = GoogleAPI.Google_geocode_API_KEY;
+
+    getCoordinates(String _address, String _city, String _state, CreateStop cs){
+        _url = "https://maps.googleapis.com/maps/api/geocode/json?address="+_address+_city+_state+"&key="+API_KEY;
+        caller = cs;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        String response = "";
+        String responseError = "";
+        HttpURLConnection conn = null;
+        try{
+            //Connect to URL
+            URL url = new URL(_url);
+
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.connect();
+
+            int responseCode=conn.getResponseCode();
+
+            //HTTP_OK --> 200
+            //HTTP_CONFLICT --> 409
+            if (responseCode == HttpsURLConnection.HTTP_OK ) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+                return response;
+            }
+            else if(responseCode == HttpURLConnection.HTTP_CONFLICT){
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                while ((line=br.readLine()) != null) {
+                    responseError+=line;
+                }
+                System.out.print(responseError);
+                return responseError;
+            }
+            else {
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null){
+                conn.disconnect();
+            }
+        }
+        return response;
+    }
+
+    protected void onPostExecute(final String success) {
+        caller.onGetCoordinatesCompleted(success);
+    }
 }
 
 class Stop extends AsyncTask<String, Void, Integer> {
@@ -172,9 +251,9 @@ class Stop extends AsyncTask<String, Void, Integer> {
     private CreateStop callback;
 
     // Create stop based off the required fields for stops
-    Stop(String name, String address, String city, String state, String zipcode, String latitude, String longitude, String hostName, CreateStop cb) {
+    Stop(String name, String address, String city, String state, String latitude, String longitude, String hostName, CreateStop cb) {
         uri = "http://" + hostName + "/stop/create";
-        json = "{\"name\":" + "\"" + name + "\"" + ",\"address\":" + "\"" + address + " " + city + ", " + state +" "+ zipcode + "\"" +
+        json = "{\"name\":" + "\"" + name + "\"" + ",\"address\":" + "\"" + address + " " + city + ", " + state + "\"" +
                 ",\"latitude\":" + "\"" + latitude + "\"" + ",\"longitude\":" + "\"" + longitude + "\"" +"}";
         callback = cb;
     }
