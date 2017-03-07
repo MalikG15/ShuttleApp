@@ -50,6 +50,8 @@ import java.util.TimerTask;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import java.util.ArrayList;
+
 
 import static java.lang.Thread.sleep;
 import static lawrence.edu.shuttleme.R.id.container;
@@ -85,6 +87,15 @@ public class Tab1Location extends Fragment {
     private String API_KEY = GoogleAPI.Google_API_KEY;
     FragmentActivity parent = null;
 
+
+    // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
+    int simulatedIndex = 0;
+
+    ArrayList<String> simulatedLats = new ArrayList<String>();
+    ArrayList<String> simulatedLongs = new ArrayList<String>();
+
+
+    // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +137,101 @@ public class Tab1Location extends Fragment {
                 // use index to iterate over hashmap and creates times
                  // if estimates <= 2
                  // say that you are located here
+        simulatedLats = new ArrayList<String>();
+        simulatedLongs = new ArrayList<String>();
+
+        simulatedLats.add("44.262359");
+        simulatedLongs.add("-88.398098");
+        simulatedLats.add("44.262924");
+        simulatedLongs.add("-88.399720");
+        simulatedLats.add("44.262932");
+        simulatedLongs.add("-88.399597");
+        simulatedLats.add("44.262382");
+        simulatedLongs.add("-88.399611");
+        simulatedLats.add("44.261810");
+        simulatedLongs.add("-88.399643");
+        simulatedLats.add("44.261829");
+        simulatedLongs.add("-88.400970");
+        simulatedLats.add("44.261805");
+        simulatedLongs.add("-88.402821");
+        simulatedLats.add("44.261859");
+        simulatedLongs.add("-88.404354");
+        simulatedLats.add("44.261848");
+        simulatedLongs.add("-88.405965");
+        simulatedLats.add("44.261825");
+        simulatedLongs.add("-88.407242");
+        simulatedLats.add("44.261825");
+        simulatedLongs.add("-88.408733");
+        simulatedLats.add("44.261833");
+        simulatedLongs.add("-88.410825");
+        simulatedLats.add("44.261795");
+        simulatedLongs.add("-88.412091");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.413722");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.415728");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.417466");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.419097");
+        simulatedLats.add("44.261872");
+        simulatedLongs.add("-88.420760");
+        simulatedLats.add("44.261849");
+        simulatedLongs.add("-88.422423");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.424086");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.425749");
+        simulatedLats.add("44.261856");
+        simulatedLongs.add("-88.427122");
+        simulatedLats.add("44.261864");
+        simulatedLongs.add("-88.428281");
+        simulatedLats.add("44.261856");
+        simulatedLongs.add("-88.429933");
+        simulatedLats.add("44.261887");
+        simulatedLongs.add("-88.430866");
+        simulatedLats.add("44.261826");
+        simulatedLongs.add("-88.432089");
+        simulatedLats.add("44.261818");
+        simulatedLongs.add("-88.433462");
+        simulatedLats.add("44.261849");
+        simulatedLongs.add("-88.435490");
+        simulatedLats.add("44.261841");
+        simulatedLongs.add("-88.438258");
+        simulatedLats.add("44.261864");
+        simulatedLongs.add("-88.440683");
+        simulatedLats.add("44.261833");
+        simulatedLongs.add("-88.443397");
+        simulatedLats.add("44.261795");
+        simulatedLongs.add("-88.445908");
+        simulatedLats.add("44.261798");
+        simulatedLongs.add("-88.448748");
+        simulatedLats.add("44.261829");
+        simulatedLongs.add("-88.450904");
+        simulatedLats.add("44.261821");
+        simulatedLongs.add("-88.452985");
+        simulatedLats.add("44.261829");
+        simulatedLongs.add("-88.454873");
+        simulatedLats.add("44.261821");
+        simulatedLongs.add("-88.455871");
+        simulatedLats.add("44.261806");
+        simulatedLongs.add("-88.458285");
+        simulatedLats.add("44.261814");
+        simulatedLongs.add("-88.460954");
+        simulatedLats.add("44.263103");
+        simulatedLongs.add("-88.460992");
+        simulatedLats.add("44.264355");
+        simulatedLongs.add("-88.460992");
+        simulatedLats.add("44.265975");
+        simulatedLongs.add("-88.461005");
+        simulatedLats.add("44.267085");
+        simulatedLongs.add("-88.461145");
+        simulatedLats.add("44.267131");
+        simulatedLongs.add("-88.461821");
+        simulatedLats.add("44.266747");
+        simulatedLongs.add("-88.462948");
+        simulatedLats.add("44.266893");
+        simulatedLongs.add("-88.463613");
     }
 
     // Overriding this method because it happens later in the cycle
@@ -163,6 +269,10 @@ public class Tab1Location extends Fragment {
         // get initial size of the routes
                 // run the request for the size of the stops
 
+        // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
+
+        // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
+
         if (stops == null) new getRoutes().execute();
 
     }
@@ -176,10 +286,18 @@ public class Tab1Location extends Fragment {
                 handler.post(new Runnable() {
                     public void run() {
                         try {
+
+
+                            // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
+                            if (simulatedIndex >= simulatedLats.size() || simulatedIndex >= simulatedLongs.size()) return;
+                            // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
+
+
                             //parent = (FragmentActivity) getActivity();
-                            if(isFragVisible==true){
+                            if(isFragVisible == true){
                                 new getDriverLoc().execute();
                             }
+                            //else return;
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -188,10 +306,29 @@ public class Tab1Location extends Fragment {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000); //execute in every 50000 ms
+        timer.schedule(doAsynchronousTask, 0, 5000);
     }
 
     public void populateTable() {
+
+        /*int tempIndex = 0;
+        int min = Integer.MAX_VALUE;
+        LinkedHashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
+        while (!prevTimeEstimate.isEmpty()) {
+            for (int x : prevTimeEstimate.keySet()) {
+                if (prevTimeEstimate.get(x) < min) {
+                    tempIndex = x;
+                    min = prevTimeEstimate.get(x);
+                }
+            }
+            temp.put(tempIndex, min);
+            prevTimeEstimate.remove(tempIndex);
+            min = Integer.MAX_VALUE;
+        }
+
+        prevTimeEstimate = temp;*/
+
+
         int runningIndex = index;
         boolean startLoop = false;
         estimatedTimes.removeAllViews();
@@ -273,6 +410,7 @@ public class Tab1Location extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         isFragVisible = isVisibleToUser;
+        //if (isFragVisible)
     }
 
     public void checkInNOut(){
@@ -313,6 +451,18 @@ public class Tab1Location extends Fragment {
         }
     }
 
+    public void onGetCheckedInStatusCompleted(String result){
+        int res = Integer.valueOf(result);
+        //Fail
+        if(res == 0){
+            // Not checked in
+        }//Success - checked in so toggle button to true;
+        if(res == 1){
+            toggleButton.setChecked(true);
+            isCheckedIn = true;
+        }
+
+    }
 
     class cascadeETA extends AsyncTask<Integer, Void, LinkedHashMap<Integer, Integer>> {
 
@@ -388,17 +538,20 @@ public class Tab1Location extends Fragment {
             int newIndex = -1;
             if (prevTimeEstimate == null)  prevTimeEstimate = result;
             else {
-                for (int s : prevTimeEstimate.keySet()) {
-                    if (result.containsKey(s)) {
-                        if (prevTimeEstimate.get(s) - result.get(s) > highestChangeInETA) {
-                            highestChangeInETA = prevTimeEstimate.get(s) - result.get(s);
-                            newIndex = s;
-                            System.out.println("This is it yall : " + newIndex);
+                if (result != null) {
+                    for (int s : result.keySet()) {
+                        if (prevTimeEstimate != null && prevTimeEstimate.containsKey(s)) {
+                            System.out.println(Math.abs(prevTimeEstimate.get(s) - result.get(s)) + " at this place " + stops.get(s).get(2));
+                            if (Math.abs(prevTimeEstimate.get(s) - result.get(s)) > highestChangeInETA) {
+                                highestChangeInETA = prevTimeEstimate.get(s) - result.get(s);
+                                newIndex = s;
+                                System.out.println("This is it yall : " + newIndex);
+                            }
                         }
                     }
+                    prevTimeEstimate = result;
+                    //index = newIndex;
                 }
-                prevTimeEstimate = result;
-                //index = newIndex;
             }
 
             if (newIndex != -1) index = newIndex;
@@ -512,8 +665,14 @@ public class Tab1Location extends Fragment {
             }
             try {
                 JSONObject driverLoc = new JSONObject(result);
-                driverLat = driverLoc.getString("latitude");
-                driverLong = driverLoc.getString("longitude");
+                // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
+
+                driverLat = simulatedLats.get(simulatedIndex);
+                driverLong = simulatedLongs.get(simulatedIndex++);
+                System.out.println(simulatedIndex + " is the location of simulation out of " + simulatedLats.size());
+                //driverLat = driverLoc.getString("latitude"); <--- CODE TO BE UNCOMMENTED
+                //driverLong = driverLoc.getString("longitude"); <-----  CODE TO BE UNCOMMENTED
+                // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
             }
             catch (JSONException ex) {
                 ex.printStackTrace();
@@ -638,18 +797,6 @@ public class Tab1Location extends Fragment {
         }
 
 
-    public void onGetCheckedInStatusCompleted(String result){
-        int res = Integer.valueOf(result);
-        //Fail
-        if(res == 0){
-            // Not checked in
-        }//Success - checked in so toggle button to true;
-        if(res == 1){
-            toggleButton.setChecked(true);
-            isCheckedIn = true;
-        }
-
-    }
 
 }
 
@@ -819,7 +966,7 @@ class checkOut extends AsyncTask<String, String, Integer> {
 
     @Override
     protected void onPostExecute(String result) {
-        //caller.onGetCheckedInStatusCompleted(result);
+        caller.onGetCheckedInStatusCompleted(result);
     }
 
     @Override

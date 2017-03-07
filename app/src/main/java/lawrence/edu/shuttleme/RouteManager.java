@@ -443,7 +443,8 @@ class RetrieveRoutesTask extends AsyncTask<String, String, String> {
 }
 
 // Assign route task
-class changeAssignmentOfRouteTask extends AsyncTask<String, String, Integer> {
+class
+changeAssignmentOfRouteTask extends AsyncTask<String, String, Integer> {
 
     RouteManager caller;
     String uRL;
