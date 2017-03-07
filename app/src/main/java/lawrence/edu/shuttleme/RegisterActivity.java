@@ -256,6 +256,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // TODO: Need to notify the user that the email given already exists
             } else {
                 Log.d("Register Activity", "Server issue:  " + success);
+                Toast.makeText(getApplicationContext(), "There was a server issue", Toast.LENGTH_SHORT).show();
                 // TODO: Some useful message about the error
             }
 
