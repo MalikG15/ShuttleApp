@@ -36,20 +36,23 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
     private LocateShuttle locateshuttleobject;
     private GoogleMap mGoogleMap = null;
     private Marker shuttleMarker;
-    private Double longitude = -88.4154;
-    private Double lat = 44.2619;
+    private Double longitude = -88.397369;
+    private Double lat = 44.260795;
 
     // Default zoom level, unless otherwise changed
     private float prevZoomLevel= 16.235184f;
 
-    // initialize boolean to know tab is already loaded or load first time
-    private boolean isFragmentLoaded = false;
+    // initialize boolean to know tab is visible on screen
+    private boolean isFragVisible = false;
 
     // initialize boolean to know marker hasnt been created
     private boolean isFirst = true;
 
     // Network URI
     public static final String hostName = "143.44.78.173:8080";
+
+    TimerTask timerTask;
+    Timer timer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,13 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_locate_shuttle, null, false);
+
+
+        //Create fragment to put map into fragment
+        FragmentManager fm = getChildFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.activity_locate_shuttle);
+        mapFragment.getMapAsync(this);
+
         return view;
     }
 
@@ -69,18 +79,20 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
 
         locateshuttleobject = this;
-
-        TimerTask timerTask = new TimerTask() {
+        LatLng appleton = new LatLng(44.2619, -88.4154);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, 15f));
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 //CALL YOUR ASSYNC TASK HERE.
-
-                //Execute asynctask that will repeatedly retrieve coordinates
-                new RetrieveCoords(locateshuttleobject, "http://" + hostName  + "/shuttle/get?shuttleid=dbc8b0c3-a879-4848-a227-b763be16582c").execute();
+                if(isFragVisible){
+                    //Execute asynctask that will repeatedly retrieve coordinates
+                    new RetrieveCoords(locateshuttleobject, "http://" + hostName  + "/shuttle/get?shuttleid=2").execute();
+                }
             }
         };
 
-        Timer timer = new Timer();
+        timer = new Timer();
 
 
         //DELAY: the time to the first execution
@@ -155,17 +167,7 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && !isFragmentLoaded ) {
-            // Load your data here or do network operations here
-
-
-            //Create fragment to put map into fragment
-            FragmentManager fm = getChildFragmentManager();
-            SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.activity_locate_shuttle);
-            mapFragment.getMapAsync(this);
-
-            isFragmentLoaded = true;
-        }
+        isFragVisible = isVisibleToUser;
     }
 public class RetrieveCoords extends AsyncTask<String, String, String> {
 

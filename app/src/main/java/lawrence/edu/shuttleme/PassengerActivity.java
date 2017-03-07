@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.CompoundButton;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -59,9 +61,35 @@ public class PassengerActivity extends AppCompatActivity {
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
+        // Add listener to tabs
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                if (mSectionsPagerAdapter != null) {
+                    int count = mSectionsPagerAdapter.getCount();
+                    Fragment fragment = (Fragment)mSectionsPagerAdapter.getItem(position);
+                    // Run through every other fragment and set visibility to false;
+                    if(fragment != null){
+                        for(int i=0; i < count; i++){
+                            if(i == position){
+                                fragment.setUserVisibleHint(true);
+                            }
+                            else{
+                                Fragment tempFrag = (Fragment)mSectionsPagerAdapter.getItem(i);
+                                if(tempFrag != null){
+                                    tempFrag.setUserVisibleHint(false);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
         tabLayout.setupWithViewPager(mViewPager);
 
 
@@ -112,9 +140,10 @@ public class PassengerActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             //Returning the current tabs
+            Tab1Location tab1;
             switch (position){
                 case 0:
-                    Tab1Location tab1 = new Tab1Location();
+                    tab1 = new Tab1Location();
                     return tab1;
                 case 1:
                     LocateShuttle tab3 = new LocateShuttle();
@@ -123,8 +152,8 @@ public class PassengerActivity extends AppCompatActivity {
                     Tab2GeneralInformation tab2 = new Tab2GeneralInformation();
                     return tab2;
                 default:
-                    Tab1Location tab0 = new Tab1Location();
-                    return tab0;
+                    tab1 = new Tab1Location();
+                    return tab1;
             }
         }
 

@@ -442,6 +442,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
+
             }
             return result;
         }
@@ -506,9 +507,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d("Login Activity", "Role: " + success[2]);
             } else if (success[2].equals("-1")) {
                 // Something went horribly wrong
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), DriverETA.class);
-                startActivity(intent);
+                View focusView = null;
+                mEmailView.setError("This email/password does not exist");
+                focusView = mEmailView;
+                focusView.requestFocus();
+
             }
                 return;
             // TODO: Redirect the user based on their role

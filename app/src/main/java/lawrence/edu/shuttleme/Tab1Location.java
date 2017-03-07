@@ -72,6 +72,8 @@ public class Tab1Location extends Fragment {
 
     //New Member Variable
     private final boolean running = true;
+    // initialize boolean to know tab is visible on screen
+    private boolean isFragVisible = true;
     private LinkedHashMap<Integer, List<String>> stops;
     private LinkedHashMap<Integer, Integer> prevTimeEstimate;
 
@@ -175,7 +177,9 @@ public class Tab1Location extends Fragment {
                     public void run() {
                         try {
                             //parent = (FragmentActivity) getActivity();
-                            new getDriverLoc().execute();
+                            if(isFragVisible==true){
+                                new getDriverLoc().execute();
+                            }
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -263,6 +267,12 @@ public class Tab1Location extends Fragment {
 
 
         return rootView;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isFragVisible = isVisibleToUser;
     }
 
     public void checkInNOut(){
