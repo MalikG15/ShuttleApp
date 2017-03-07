@@ -80,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mActionBarToolbar);
-        getSupportActionBar().setTitle("Register");
+        getSupportActionBar().setTitle("ShuttleMe");
     }
 
     @Override

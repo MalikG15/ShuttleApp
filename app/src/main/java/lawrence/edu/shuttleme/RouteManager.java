@@ -83,7 +83,7 @@ public class RouteManager extends AppCompatActivity {
         descriptions.put(two, "This is the second route! You know this MANNNN");*/
 
         // Execute a AssignRoute task using selected route when button pressed
-        mAssignRouteButton = (Button) findViewById(R.id.delete_stop);
+        mAssignRouteButton = (Button) findViewById(R.id.assign_route);
         mAssignRouteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

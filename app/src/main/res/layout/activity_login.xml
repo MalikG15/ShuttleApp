@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -31,102 +32,99 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_marginTop="50dp"
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0"
-        style="@style/AppTheme.NoActionBar">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/email_login_form"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/email_parent"
+            android:layout_width="0dp"
+            app:layout_widthPercent="80%"
+            app:layout_heightPercent="12%"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            app:layout_marginTopPercent="12.5%">
 
-            <android.support.design.widget.TextInputLayout
+            <AutoCompleteTextView
+                android:id="@+id/email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="322dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textSize="20sp" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="322dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textSize="20sp"
-                    android:typeface="sans" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/email_sign_in_button"
-                style="@style/AppTheme.NoActionBar"
-                android:layout_width="322dp"
-                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:background="@color/Lawrence_secondary_blue"
-                android:textColor="@color/default_color"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textSize="18sp"/>
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textSize="20sp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="3"
-            android:gravity="center|bottom"
-            android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Need an account?"
-                    android:textColor="@color/Lawrence_secondary_blue"
-                    android:layout_marginTop="205dp"/>
+        </android.support.design.widget.TextInputLayout>
 
-                <Button
-                    android:id="@+id/request_register_button"
-                    style="@style/AppTheme.NoActionBar"
-                    android:layout_gravity="center|center_horizontal"
-                    android:layout_height="40dp"
-                    android:text="@string/action_request_register"
-                    android:background="@color/Lawrence_primary_grey"
-                    android:textColor="@color/default_color"
-                    android:textAllCaps="false"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textSize="15sp"
-                    android:layout_width="150dp"
-                    android:layout_marginTop="5dp"/>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_parent"
+            android:layout_width="0dp"
+            app:layout_widthPercent="80%"
+            app:layout_heightPercent="12%"
+            android:layout_below="@id/email_parent"
+            android:layout_centerHorizontal="true">
 
-        </LinearLayout>
-        </LinearLayout>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_password"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textSize="20sp"
+                android:typeface="sans"/>
 
-    </ScrollView>
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/email_sign_in_button"
+            style="@style/AppTheme.NoActionBar"
+            android:layout_width="0dp"
+            app:layout_widthPercent="80%"
+            app:layout_heightPercent="10%"
+            android:background="@color/Lawrence_secondary_blue"
+            android:textColor="@color/default_color"
+            android:layout_marginTop="16dp"
+            android:text="@string/action_sign_in"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp"
+            android:layout_below="@id/password_parent"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/request_register_button"
+            style="@style/AppTheme.NoActionBar"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:layout_widthPercent="30%"
+            android:text="@string/action_request_register"
+            android:background="@color/Lawrence_primary_grey"
+            android:textColor="@color/default_color"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="15sp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:layout_marginTopPercent="1%"
+            app:layout_marginBottomPercent="2.5%"/>
+
+        <TextView
+            android:id="@+id/register_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Need an account?"
+            android:textColor="@color/Lawrence_secondary_blue"
+            android:layout_above="@id/request_register_button"
+            android:layout_centerHorizontal="true"/>
+
+    </android.support.percent.PercentRelativeLayout>
+
 </LinearLayout>

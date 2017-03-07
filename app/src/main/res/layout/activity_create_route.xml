@@ -13,14 +13,17 @@
     >
 
     <TextView
-        android:text="Stops:"
-        android:layout_width="wrap_content"
+        android:text="Stops"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView8"
         android:textSize="24sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="@color/default_color"
+        android:background="@color/Lawrence_primary_grey"
+        android:textAlignment="center"/>
 
     <Spinner
         android:layout_width="match_parent"
@@ -29,7 +32,8 @@
         android:layout_below="@+id/textView8"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        style="@style/spinner_style"/>
 
     <ListView
         android:layout_width="match_parent"
@@ -46,10 +50,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/add_stop_to_route"
         android:layout_below="@+id/delete_stop"
+        android:layout_marginTop="6dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/Lawrence_secondary_blue"
+        android:textColor="@color/default_color"/>
 
     <Button
         android:text="Delete Stop From Database"
@@ -61,7 +68,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@color/Lawrence_secondary_blue"
+        android:textColor="@color/default_color"/>
 
     <TextView
         android:text="Temporary Route (Order first to last)"
@@ -80,6 +89,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/finalize_route"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@color/Lawrence_secondary_blue"
+        android:textColor="@color/default_color"/>
 
 </RelativeLayout>
