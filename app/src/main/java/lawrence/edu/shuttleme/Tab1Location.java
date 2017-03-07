@@ -298,6 +298,9 @@ public class Tab1Location extends Fragment {
                                 new getDriverLoc().execute();
                             }
                             //else return;
+                            //if(isFragVisible==true){
+                                new getDriverLoc().execute();
+                            //}
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -341,8 +344,8 @@ public class Tab1Location extends Fragment {
             TextView ETA = new TextView(parent.getApplicationContext());
             if (stops.containsKey(runningIndex)) name.setText(stops.get(runningIndex).get(2));
             if (prevTimeEstimate.containsKey(runningIndex)) {
-                if (prevTimeEstimate.get(runningIndex) > 3) ETA.setText(" is about " + String.valueOf(prevTimeEstimate.get(runningIndex)) + " mins from the Shuttle.");
-                else ETA.setText(" is where the shuttle is located. ");
+                if (prevTimeEstimate.get(runningIndex) > 3) ETA.setText(" : about " + String.valueOf(prevTimeEstimate.get(runningIndex)) + " mins away.");
+                else ETA.setText(" : shuttle is here. ");
             }
             tableRow.addView(name);
             ETA.setTextColor(Color.GREEN);
@@ -401,8 +404,6 @@ public class Tab1Location extends Fragment {
 
         //Check checked-in status
         new getCheckInStatus(this, "http://" + hostName  + "/clipboard/status?userid="+id).execute();
-
-
         return rootView;
     }
 
@@ -450,6 +451,7 @@ public class Tab1Location extends Fragment {
             isCheckedIn = true;
         }
     }
+
 
     public void onGetCheckedInStatusCompleted(String result){
         int res = Integer.valueOf(result);
