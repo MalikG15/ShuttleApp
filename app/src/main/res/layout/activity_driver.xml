@@ -41,14 +41,15 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-<!--
             <Button
-                android:text="Send Your Location to Riders"
-                android:layout_width="wrap_content"
+                android:text="Refresh Passengers"
+                android:layout_marginTop="15dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/send_location"
-                android:layout_centerHorizontal="true" />
--->
+                android:id="@+id/refresh_clipboard"
+                android:layout_centerHorizontal="true"
+                android:background="@color/Lawrence_secondary_blue"
+                android:textColor="@color/default_color"/>
 
             <ListView
                 android:id="@+id/check_list_view"
@@ -61,6 +62,7 @@
 
             </ListView>
 
+            <!--
             <TextView
                 android:text="Longitude filler"
                 android:layout_width="wrap_content"
@@ -107,7 +109,7 @@
                 android:layout_alignStart="@+id/latitudeText"
                 android:textSize="20sp" />
 
-            <!--
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"

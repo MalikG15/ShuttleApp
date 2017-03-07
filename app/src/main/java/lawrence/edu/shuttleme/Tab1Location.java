@@ -264,8 +264,6 @@ public class Tab1Location extends Fragment {
 
         //Check checked-in status
         new getCheckInStatus(this, "http://" + hostName  + "/clipboard/status?userid="+id).execute();
-
-
         return rootView;
     }
 

@@ -64,7 +64,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -77,12 +79,14 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
     private String driverID;
 
     private ListView listView;
+    private Map<Integer, String> listOfUsers;
     private TextView passengerTextView;
-    private Button getLocation;
+    private Button refresh;
     private TextView latitudeText;
     private TextView longitudeText;
     private TextView latitudeLabel;
     private TextView longitudeLabel;
+    CustomAdapter customadapter;
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -110,10 +114,17 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
 
         listView = (ListView) findViewById(R.id.check_list_view);
         //passengerTextView = (TextView) findViewById(R.id.checked_in_passengers);
-        getLocation = (Button) findViewById(R.id.send_location);
+        refresh = (Button) findViewById(R.id.refresh_clipboard);
+        refresh.setOnClickListener(new View.OnClickListener() {
 
-        latitudeLabel = (TextView) findViewById(R.id.latitudeLabel);
-        longitudeLabel = (TextView) findViewById(R.id.longitudeLabel);
+            @Override
+            public void onClick(View view) {
+                clipBoard.updatePassengerList();
+            }
+        });
+
+        // latitudeLabel = (TextView) findViewById(R.id.latitudeLabel);
+        // longitudeLabel = (TextView) findViewById(R.id.longitudeLabel);
         latitudeText = (TextView) findViewById(R.id.latitudeText);
         longitudeText = (TextView) findViewById(R.id.longitudeText);
 
@@ -139,7 +150,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
         // TODO: Clipboard id to get
 
         // TODO: Make populate passengers update automatically after 30 seconds or create a refresh button
-        //populatePassengers();
+        populatePassengers();
 
         if (mGoogleApiClient == null) {
             // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
@@ -189,7 +200,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
             if (mLastLocation != null) {
                 latitude = String.valueOf(mLastLocation.getLatitude());
                 longitude = String.valueOf(mLastLocation.getLongitude());
-                updateUI();
+                //updateUI();
                 new PostDriverLocationTask(latitude, longitude, driverID).execute();
             }
 
@@ -214,7 +225,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
         latitude = String.valueOf(location.getLatitude());
         longitude = String.valueOf(location.getLongitude());
         mLastLocation = location;
-        updateUI();
+        // updateUI();
         new PostDriverLocationTask(latitude, longitude, driverID).execute();
     }
 
@@ -296,22 +307,27 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
 
         public ClipBoard(DriverActivity DR){
             driverActivity = DR;
+            // Store id and names of users
+            listOfUsers = new HashMap<Integer,String>();
         }
 
         public void updatePassengerList() {
             // TODO: Persist checked in list
-            populateList("");
-            //new RetrieveCheckedIn().execute();
+            new RetrieveCheckedInPassengers().execute();
+            //filterUserID("");
         }
 
-        public void populateList(String result) {
-            current_passengers = new ArrayList<String>();
+        public void filterUserID(String result) {
+            String JSON_userIDs = "{\"users\":[";
+
+            /*
             String[] items = {"David - 7731234567", "Malik - 4372637463", "Elkin - 372827376"};
             arrayList = new ArrayList<>(Arrays.asList(items));
             adapter = new ArrayAdapter<String>(driverActivity, R.layout.list_view, R.id.textitem, arrayList);
             listView.setAdapter(adapter);
             passengerTextView.setText("Currently " + arrayList.size() + " Passengers CheckedIn");
-            /*
+            */
+
             // Parse data - get name of passenger and phone number
             try {
                 JSONArray jArray = new JSONArray(result);
@@ -320,10 +336,61 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
                     try {
                         JSONObject root = jArray.getJSONObject(i);
                         // Pulling items from the array
-                        String id = root.getString("name");
-                        String name = root.getString("phonenumber");
-                        //listOfUsers.put(i,id);
-                        //users.add(name);
+                        String id = root.getString("userid");
+                        JSON_userIDs = JSON_userIDs + "{\"userid\":\"" + id + "\"}";
+                        if(i+1 < jArray.length())
+                            JSON_userIDs += ",";
+                        listOfUsers.put(i,id);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                JSON_userIDs = JSON_userIDs + "]}";
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if(JSON_userIDs != "") {
+                new RetrieveList(this, JSON_userIDs).execute();
+            }
+            else {
+                Context context = getApplicationContext();
+                CharSequence text = "No new passengers checked in!";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+            // Update current list of passengers
+            //adapter = new ArrayAdapter<String>(driverActivity, R.layout.list_view, R.id.textitem, current_passengers);
+            //listView.setAdapter(adapter);
+        }
+        public void populateClipboard(String result) {
+            Log.d("Driver Activity", "Result: " + result);
+            current_passengers = new ArrayList<String>();
+
+            // Store id and names of users
+            listOfUsers = new HashMap<Integer,String>();
+
+            /*
+            String[] items = {"David - 7731234567", "Malik - 4372637463", "Elkin - 372827376"};
+            arrayList = new ArrayList<>(Arrays.asList(items));
+            adapter = new ArrayAdapter<String>(driverActivity, R.layout.list_view, R.id.textitem, arrayList);
+            listView.setAdapter(adapter);
+            passengerTextView.setText("Currently " + arrayList.size() + " Passengers CheckedIn");
+            */
+
+            // Parse data - get name of passenger and phone number
+            try {
+                JSONObject jobject = new JSONObject(result);
+                JSONArray jsonArray = jobject.getJSONArray("users");
+                for (int i=0; i < jsonArray.length(); i++)
+                {
+                    try {
+                        JSONObject root = jsonArray.getJSONObject(i);
+                        // Pulling items from the array
+                        String name = root.getString("name");
+                        String phonenumber = root.getString("phonenumber");
+                        current_passengers.add(name + " - " + phonenumber);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -331,11 +398,15 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            */
 
-            // Update current list of passengers
-            //adapter = new ArrayAdapter<String>(driverActivity, R.layout.list_view, R.id.textitem, current_passengers);
-            //listView.setAdapter(adapter);
+            if(current_passengers.size() > 0) {
+                // Update current list of passengers
+                adapter = new ArrayAdapter<String>(driverActivity, R.layout.list_view, R.id.textitem, current_passengers);
+                listView.setAdapter(adapter);
+            }
+            else {
+                // TODO: Tell driver there are no passengers checked in
+            }
         }
 
         class RetrieveCheckedInPassengers extends AsyncTask<String, String, String> {
@@ -343,7 +414,7 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
             String uri = "";
 
             public RetrieveCheckedInPassengers() {
-                // uri = "http://" + hostName + "/user/checkuser?email=" + mEmail + "&password=" + mPassword;
+                uri = "http://" + hostName + "/clipboard/get";
             }
 
             @Override
@@ -383,11 +454,10 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
                         while ((line=br.readLine()) != null) {
                             responseError+=line;
                         }
-
                         return responseError;
                     }
                     else {
-
+                        return response;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -399,11 +469,84 @@ public class DriverActivity extends AppCompatActivity implements ConnectionCallb
                 }
                 return response;
             }
+            @Override
+            protected void onPostExecute(String result) {
+                filterUserID(result);
+            }
+        }
 
+        class RetrieveList extends AsyncTask<String, String, String> {
+
+            String uri;
+            ClipBoard clipBoard;
+            String JSON;
+
+            public RetrieveList(ClipBoard context, String JSON) {
+                uri = "http://" + hostName + "/clipboard/getuserinfo";
+                clipBoard = context;
+                this.JSON = JSON;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
 
             @Override
             protected void onPostExecute(String result) {
-                populateList(result);
+                clipBoard.populateClipboard(result);
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+
+            @Override
+            protected void onCancelled(String s) {
+                super.onCancelled(s);
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                List<String> listOfPassengers = new ArrayList<String>();
+
+                String return_response = "";
+                String responseError = "";
+                HttpURLConnection conn = null;
+                try{
+                    int TIMEOUT_MILLISEC = 10000;  // = 10 seconds
+                    HttpParams httpParams = new BasicHttpParams();
+                    HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+                    HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+                    HttpClient client = new DefaultHttpClient(httpParams);
+
+                    HttpPost request = new HttpPost(uri);
+                    request.setEntity(new ByteArrayEntity(
+                            JSON.toString().getBytes("UTF8")));
+                    HttpResponse response = client.execute(request);
+                    String line;
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                    while ((line=reader.readLine()) != null) {
+                        return_response += line;
+                    }
+                    return return_response;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (conn != null){
+                        conn.disconnect();
+                    }
+                }
+                //return response;
+                return "";
             }
 
         }
