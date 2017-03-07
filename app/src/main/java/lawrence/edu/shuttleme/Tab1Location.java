@@ -51,6 +51,8 @@ import java.util.TimerTask;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import java.util.ArrayList;
+
 
 import static java.lang.Thread.sleep;
 import static lawrence.edu.shuttleme.R.id.container;
@@ -73,6 +75,8 @@ public class Tab1Location extends Fragment {
 
     //New Member Variable
     private final boolean running = true;
+    // initialize boolean to know tab is visible on screen
+    private boolean isFragVisible = true;
     private LinkedHashMap<Integer, List<String>> stops;
     private LinkedHashMap<Integer, Integer> prevTimeEstimate;
 
@@ -84,11 +88,17 @@ public class Tab1Location extends Fragment {
     private String API_KEY = GoogleAPI.Google_API_KEY;
     FragmentActivity parent = null;
 
+
+
+
+    // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
+    int simulatedIndex = 0;
+
     ArrayList<String> simulatedLats;
     ArrayList<String> simulatedLongs;
 
-    int simulatedIndex = 0;
 
+    // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -263,6 +273,10 @@ public class Tab1Location extends Fragment {
         // get initial size of the routes
                 // run the request for the size of the stops
 
+        // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
+
+        // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------
+
         if (stops == null) new getRoutes().execute();
 
     }
@@ -282,13 +296,10 @@ public class Tab1Location extends Fragment {
 
 
                             //parent = (FragmentActivity) getActivity();
-                            //if(isFragVisible == true){
-                            System.out.println(simulatedIndex + "---------------------- at a size of ----------------------" + simulatedLats.size());
-                                new getDriverLoc().execute();
-                            //}
+
                             //else return;
                             //if(isFragVisible==true){
-                               // new getDriverLoc().execute();
+                                new getDriverLoc().execute();
                             //}
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
@@ -302,6 +313,25 @@ public class Tab1Location extends Fragment {
     }
 
     public void populateTable() {
+
+        /*int tempIndex = 0;
+        int min = Integer.MAX_VALUE;
+        LinkedHashMap<Integer, Integer> temp = new LinkedHashMap<Integer, Integer>();
+        while (!prevTimeEstimate.isEmpty()) {
+            for (int x : prevTimeEstimate.keySet()) {
+                if (prevTimeEstimate.get(x) < min) {
+                    tempIndex = x;
+                    min = prevTimeEstimate.get(x);
+                }
+            }
+            temp.put(tempIndex, min);
+            prevTimeEstimate.remove(tempIndex);
+            min = Integer.MAX_VALUE;
+        }
+
+        prevTimeEstimate = temp;*/
+
+
         int runningIndex = index;
         boolean startLoop = false;
         int sum = 0;
@@ -377,9 +407,14 @@ public class Tab1Location extends Fragment {
 
         //Check checked-in status
         new getCheckInStatus(this, "http://" + hostName  + "/clipboard/status?userid="+id).execute();
-
-
         return rootView;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isFragVisible = isVisibleToUser;
+        //if (isFragVisible)
     }
 
     public void checkInNOut(){
@@ -420,6 +455,19 @@ public class Tab1Location extends Fragment {
         }
     }
 
+
+    public void onGetCheckedInStatusCompleted(String result){
+        int res = Integer.valueOf(result);
+        //Fail
+        if(res == 0){
+            // Not checked in
+        }//Success - checked in so toggle button to true;
+        if(res == 1){
+            toggleButton.setChecked(true);
+            isCheckedIn = true;
+        }
+
+    }
 
     class cascadeETA extends AsyncTask<Integer, Void, LinkedHashMap<Integer, Integer>> {
 
@@ -513,8 +561,6 @@ public class Tab1Location extends Fragment {
                     prevTimeEstimate = result;
                     //index = newIndex;
                 }
-                prevTimeEstimate = result;
-                //index = newIndex;
             }
 
             if (newIndex != -1) index = newIndex;
@@ -628,12 +674,14 @@ public class Tab1Location extends Fragment {
             }
             try {
                 JSONObject driverLoc = new JSONObject(result);
+                // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
 
                 driverLat = simulatedLats.get(simulatedIndex);
                 driverLong = simulatedLongs.get(simulatedIndex++);
-
-               // driverLat = driverLoc.getString("latitude");
-               // driverLong = driverLoc.getString("longitude");
+                System.out.println(simulatedIndex + " is the location of simulation out of " + simulatedLats.size());
+                //driverLat = driverLoc.getString("latitude"); <--- CODE TO BE UNCOMMENTED
+                //driverLong = driverLoc.getString("longitude"); <-----  CODE TO BE UNCOMMENTED
+                // -----> TO BE DELETED (FOR SIMULATION PURPOSES ONLY) <------ \\
             }
             catch (JSONException ex) {
                 ex.printStackTrace();
@@ -758,18 +806,6 @@ public class Tab1Location extends Fragment {
         }
 
 
-    public void onGetCheckedInStatusCompleted(String result){
-        int res = Integer.valueOf(result);
-        //Fail
-        if(res == 0){
-            // Not checked in
-        }//Success - checked in so toggle button to true;
-        if(res == 1){
-            toggleButton.setChecked(true);
-            isCheckedIn = true;
-        }
-
-    }
 
 }
 
@@ -939,7 +975,7 @@ class checkOut extends AsyncTask<String, String, Integer> {
 
     @Override
     protected void onPostExecute(String result) {
-        //caller.onGetCheckedInStatusCompleted(result);
+        caller.onGetCheckedInStatusCompleted(result);
     }
 
     @Override

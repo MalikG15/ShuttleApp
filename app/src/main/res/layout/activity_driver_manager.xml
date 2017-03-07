@@ -18,13 +18,16 @@
         android:layout_alignParentStart="true">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Select the list you'd like to see"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textColor="@color/default_color"
+            android:background="@color/Lawrence_primary_grey"/>
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -89,7 +92,9 @@
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/radioGroup"
             android:layout_alignTop="@+id/demote"
-            android:layout_toRightOf="@+id/radioGroup" />
+            android:layout_toRightOf="@+id/radioGroup"
+            android:background="@color/Lawrence_secondary_blue"
+            android:textColor="@color/default_color"/>
 
         <Button
             android:text="Demote to Passenger"
@@ -100,7 +105,9 @@
             android:textSize="12sp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:background="@color/Lawrence_secondary_blue"
+            android:textColor="@color/default_color"/>
 
     </RelativeLayout>
 

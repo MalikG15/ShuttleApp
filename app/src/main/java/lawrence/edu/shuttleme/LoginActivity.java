@@ -35,6 +35,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -140,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
+        mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -158,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void registerActivity() {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+        finish();
     }
 
     /*
@@ -441,6 +443,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
+
             }
             return result;
         }
@@ -460,14 +463,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             */
 
-            if(success[2] != "") {
+            //if(!success[2].equals("")) {
                 redirectByRole(success);
-                Log.d("Login Activity", "We in boy! " + success[2]);
+                System.out.print("Success means this: " + success[2]);
+                Log.d("Login Activity", success[2]);
+            /*
             }
             else {
                 Log.d("Login Activity", "Need to create an account or Server issue! " + success[1]);
+                Toast.makeText(getApplicationContext(), "Need to create an account or Server issue!", Toast.LENGTH_SHORT).show();
+
                 // TODO: Need to notify the user that they need to create an account since their email/pass combo is invalid or that there was an error
             }
+            */
         }
 
         @Override
@@ -503,11 +511,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
                 finish();
                 Log.d("Login Activity", "Role: " + success[2]);
-            } else if (success[2].equals("-1")) {
+            } else if (success[2].equals("")) {
                 // Something went horribly wrong
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), DriverETA.class);
-                startActivity(intent);
+                View focusView = null;
+                mEmailView.setError("Email-password combination does not exist");
+                focusView = mEmailView;
+                focusView.requestFocus();
             }
                 return;
             // TODO: Redirect the user based on their role

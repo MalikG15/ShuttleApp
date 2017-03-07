@@ -51,4 +51,5 @@ dependencies {
     // More information can be found here: https://developer.android.com/studio/build/multidex.html
     compile 'com.android.support:multidex:1.0.1'
 
+    compile 'com.android.support:percent:25.1.1'
 }

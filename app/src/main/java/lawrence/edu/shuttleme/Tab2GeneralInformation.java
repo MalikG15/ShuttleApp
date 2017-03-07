@@ -30,6 +30,9 @@ public class Tab2GeneralInformation extends Fragment{
         return rootView;
     }
 
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 
 }
