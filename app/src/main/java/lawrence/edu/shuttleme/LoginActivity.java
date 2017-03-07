@@ -35,6 +35,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -462,12 +463,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             */
 
-            if(success[2] != "") {
+            if(!success[2].equals("")) {
                 redirectByRole(success);
-                Log.d("Login Activity", "We in boy! " + success[2]);
+                System.out.print("Success means this: " + success[2]);
+                Log.d("Login Activity", success[2]);
             }
             else {
                 Log.d("Login Activity", "Need to create an account or Server issue! " + success[1]);
+                Toast.makeText(getApplicationContext(), "Need to create an account or Server issue!", Toast.LENGTH_SHORT).show();
+
                 // TODO: Need to notify the user that they need to create an account since their email/pass combo is invalid or that there was an error
             }
         }
