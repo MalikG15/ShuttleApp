@@ -86,6 +86,8 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
 
         simulatedLats.add("44.262359");
         simulatedLongs.add("-88.398098");
+        simulatedLats.add("44.262939");
+        simulatedLongs.add("-88.398272");
         simulatedLats.add("44.262924");
         simulatedLongs.add("-88.399720");
         simulatedLats.add("44.262932");
@@ -185,17 +187,14 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
 
         locateshuttleobject = this;
-<<<<<<< HEAD
+
         LatLng appleton = new LatLng(44.2623821, -88.398101);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, 16f));
-=======
-        LatLng appleton = new LatLng(44.2619, -88.4154);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, 15f));
 
         // Needs to be deleted
         simulateShuttle();
 
->>>>>>> shuttleappelkin
+
         timerTask = new TimerTask() {
             @Override
             public void run() {
