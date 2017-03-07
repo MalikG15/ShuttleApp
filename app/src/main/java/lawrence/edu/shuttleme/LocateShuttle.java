@@ -79,8 +79,8 @@ public class LocateShuttle extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
 
         locateshuttleobject = this;
-        LatLng appleton = new LatLng(44.2619, -88.4154);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, 15f));
+        LatLng appleton = new LatLng(44.2623821, -88.398101);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(appleton, 16f));
         timerTask = new TimerTask() {
             @Override
             public void run() {
